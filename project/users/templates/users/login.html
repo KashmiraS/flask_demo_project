@@ -1,0 +1,62 @@
+{%extends 'base.html'%}
+{%block conant%}
+<style>
+    body{
+    height: 100%;
+    background-size: cover;
+    background:url({{url_for('static',filename='img/login_room.jpg')}})no-repeat center center fixed;
+    }
+</style>
+<div class="back">
+    <div class="title-header" style="border-radius:0px;">
+        <div class="display-4">Sign in</div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <div class="card">
+                      <form method="POST">
+                          <div class="card-header bg-dark">
+                              <center> <img src="{{url_for('static',filename='logo.png')}}"/></center>
+                          </div>
+                          <div class="card-body">
+                                  <div class="form-group">
+                                    <label for="email">User Name</label>
+                                    <input type="username" class="form-control" id="email" name="email" placeholder="User Name">
+                                    </div>
+                                  <div class="form-group">
+                                    <label for="exampleInputPassword1">Password</label>
+                                    <input type="password" name="password" id="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                                  </div>
+                              <div style="text-align: right;">
+                                  <a href="#">Forget Password</a>
+                              </div>
+                          </div>
+                          <center>
+                              {%if Error_ == 'KEY_ERROR'%}
+                                  <div class="alert-danger" role="alert">
+                                      <span>Please enter  valid password</span>
+                                  </div>
+                              {%elif Error_ == 'ERROR_ON_USER_KEY'%}
+                                  <div class="alert-danger" role="alert">
+                                      <span>Please enter registered username & password</span>
+                                  </div>
+                              {%elif Error_ == 'NO_INPUT'%}
+                                  <div class="alert-danger" role="alert">
+                                      <span>Please enter username & password</span>
+                                  </div>
+                              {%endif%}
+                          </center>
+                          <div class="card-footer">
+                                  <button type="submit" class="btn btn-primary">Sign in</button>
+                              <a herf="{{url_for('users.registration')}}"><button class="btn btn-warning">Sign up</button></a>
+                          </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}

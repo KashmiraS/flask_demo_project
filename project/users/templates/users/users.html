@@ -1,0 +1,8 @@
+{%extends 'base.html'%}
+{%block conant%}
+<div class="jumbotron devunder" style="background:url({{url_for('static',filename='img/networking-1.jpg')}});" >
+    <div class="display-3">User Index page</div>
+    <div class="">Some text must enter here{{users_}}</div>
+</div>
+{% include 'undev.html' %}
+{%endblock%}
