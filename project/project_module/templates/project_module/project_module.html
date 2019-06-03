@@ -1,0 +1,23 @@
+{% extends 'base.html'%}
+{%block conant%}
+<div class="jumbotron devunder"  style="background:url({{url_for('static',filename='img/coming-soon.jpg')}});">
+    <div class="display-3">All Projects</div>
+</div>
+<div class="container">
+    <div class="card">
+        <div class="card-footer">
+            <a href="{{url_for('project.new_project')}}" class="btn btn-outline-primary">add new project</a>
+            <a href="#" class="btn btn-outline-info">status</a>
+            <a href="#" class="btn btn-outline-info">Releasing this months</a>
+        </div>
+    </div>
+    <!--HEADER of the Project actions-->
+
+
+
+
+</div>
+
+
+
+{%endblock%}

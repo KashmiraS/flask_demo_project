@@ -17,30 +17,45 @@
             <div class="col-md-4"></div>
             <div class="col-md-4">
                 <div class="card">
-                      <form>
+                      <form method="POST">
                           <div class="card-header bg-dark">
                               <center> <img src="{{url_for('static',filename='logo.png')}}"/></center>
                           </div>
                           <div class="card-body">
                                   <div class="form-group">
-                                    <label for="exampleInputEmail1">User Name</label>
-                                    <input type="username" class="form-control" id="username"  placeholder="Enter User Name">
-                                    </div>
-                                  <div class="form-group">
-                                    <label for="exampleInputEmail1">Email address</label>
-                                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                                      {{form.username.label}}
+                                      {{form.username(class_='form-control',placeholder="Enter User Name")}}
                                    </div>
                                   <div class="form-group">
-                                    <label for="exampleInputPassword1">Password</label>
-                                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                                      {{form.email.label}}
+                                      {{form.email(class_='form-control',placeholder="Enter email")}}
                                   </div>
                                   <div class="form-group">
-                                    <label for="exampleInputPassword2">Re-Enter Password</label>
-                                    <input type="password" class="form-control" id="exampleInputPassword2" placeholder="Re-Enter Password">
+                                      {{form.password.label}}
+                                      {{form.password(class_='form-control',placeholder="Password")}}
                                   </div>
+                                  <div class="form-group">
+                                      {{form.re_enter_pass.label}}
+                                      {{form.re_enter_pass(class_='form-control',placeholder="Re-Enter Password")}}
+                                  </div>
+                                <center>
+                                    {%if Error_ == 'PASSWORD_NOT_MATCH'%}
+                                  <div class="alert-danger" role="alert">
+                                      <span>Password not matched!</span>
+                                  </div>
+                                    {%elif Error_ == 'VALUES_ERROR'%}
+                                  <div class="alert-danger" role="alert">
+                                      <span>Can't possess your request please check your inputs</span>
+                                  </div>
+                                    {%elif Error_ == 'EXIST'%}
+                                  <div class="alert-danger" role="alert">
+                                      <span>User already Exist with '{{form.email.data}}'</span>
+                                  </div>
+                                    {%endif%}
+                                </center>
                           </div>
                           <div class="card-footer">
-                                  <button type="submit" class="btn btn-primary">Sign up</button>
+                              {{form.submit(class_='btn btn-primary')}}
                         </div>
                     </form>
                 </div>

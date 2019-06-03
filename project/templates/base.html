@@ -8,6 +8,11 @@
     <link rel="icon" href="{{url_for('static',filename='favicon_nitor.png')}}"/>
      <link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}"/>
     <title>Demo Project</title>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
 </head>
 <body>
 <!--Navbar section-->
@@ -19,7 +24,8 @@
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav">
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+      {%if not current_user.is_authenticated%}
       <li class="nav-item ">
         <a class="nav-link" href="{{url_for('index')}}">Home</a>
       </li>
@@ -29,7 +35,22 @@
       <li class="nav-item ">
         <a class="nav-link" href="{{url_for('users.login')}}">Sign in</a>
       </li>
+      {%else%}
+      <li class="nav-item ">
+        <a class="nav-link" href="{{url_for('users.index')}}">Dashboard</a>
+      </li>
+      <li class="nav-item ">
+        <a class="nav-link" href="{{url_for('project.index')}}">Projects</a>
+      </li>
+      {%endif%}
     </ul>
+      {%if current_user.is_authenticated%}
+        <div class="form-inline my-2 my-lg-0">
+          <a href="{{url_for('users.logout')}}">
+            <button class="btn btn-outline-success my-2 my-sm-0">Sign out</button>
+          </a>
+        </div>
+      {%endif%}
   </div>
 </nav>
 
@@ -37,9 +58,5 @@
 <!--END NAVBAR-->
 {%block conant%}
 
-{%endblock%}
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-</body>
+{%endblock%}</body>
 </html>
