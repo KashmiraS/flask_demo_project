@@ -1,5 +1,7 @@
 from flask import url_for, render_template, Blueprint, request, redirect
-from project import User, db
+from project import User, db ,host_address
+import requests
+import json
 import flask_login
 from project.users.froms import user_registration, user_login
 from project.users.models import Users
@@ -25,12 +27,11 @@ def registration():
             try:
                 username = form.username.data
                 email = form.email.data
-                present = bool(Users.query.filter_by(email=email).first())
+                present = (json.loads((requests.get('{}/user_check/{}'.format(host_address,email))).text))['status']
                 if not present:
-                    user_obj = Users(username, email, password)
-                    db.session.add(user_obj)
-                    db.session.commit()
-                    return redirect(url_for('users.login'))
+                    res=(json.loads((requests.post('{}/register/{}/{}/{}'.format(host_address,username, email, password))).text))['status']
+                    if res:
+                        return redirect(url_for('users.login'))
                 Error_ = 'EXIST'
             except Exception as e:
                 print(str(e))
@@ -54,7 +55,7 @@ def login():
                 return render_template('login.html', form=form, Error_='NO_INPUT')
             else:
                 print('here input' + email_)
-                present = bool(Users.query.filter(Users.email == email_, Users.password_text == password).first())
+                present = (json.loads((requests.get('{}/login/{}/{}'.format(host_address,email_, password))).text))['status']
                 if present:
                     user = User()
                     user.id = email_
@@ -64,8 +65,9 @@ def login():
                 Error_ = 'KEY_ERROR'
         except KeyError:
             Error_ = 'ERROR_ON_USER_KEY'
-        except Exception:
-            Error_ = 'ok'
+        except Exception as e:
+            Error_ = 'ok'+str(e)
+    print(Error_)
     if flask_login.current_user.is_authenticated:
         return redirect(url_for('users.index'))
     else:

@@ -1,5 +1,5 @@
 from flask import Blueprint
-from project.api.db_helper.users_data import get_all
+from reasearch.api.demo_hit import get_all
 api = Blueprint('api', __name__)
 
 
