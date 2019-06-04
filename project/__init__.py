@@ -62,6 +62,8 @@ def unauthorized_handler():
 #############################
 from project.users.views import user_print
 from project.project_module.views import project_print
+from project.api.demo_api_test import api
+app.register_blueprint(api, url_prefix='/api')
 app.register_blueprint(user_print, url_prefix='/users')
 app.register_blueprint(project_print, url_prefix='/project')
 
