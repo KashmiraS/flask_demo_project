@@ -98,8 +98,11 @@ def page_not_found(e):
 from project.api.db_helper.login_check import login_helper
 from project.api.db_helper.login_check import user_check
 from project.api.db_helper.login_check import register
+from project.api.db_helper.project_operatios import project_crud
 
 api_obj.add_resource(login_helper, '/api/login/<string:email_>/<string:password>')
 api_obj.add_resource(user_check, '/api/user_check/<string:email_>')
 api_obj.add_resource(register, '/api/register/<string:username>/<string:email>/<string:password>')
+#api_obj.add_resource(project_crud, '/api/project/<string:project_name>/<string:project_description>/<string:project_starting_date>/<string:project_releasing>/<string:customer_name>/<string:customer_contact>/<string:customer_mail>/<string:customer_company_name>/<string:customer_site>')
+api_obj.add_resource(project_crud, '/api/project')
 
