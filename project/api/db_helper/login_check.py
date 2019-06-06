@@ -1,12 +1,17 @@
 from project.users.models import Users
 from flask_restful import Resource
 from project import db
-
+from flask import json
 
 class login_helper(Resource):
     def get(self, email_, password):
         print("LOGIN REQUEST :{} ".format(email_))
-        res = {'status': bool(Users.query.filter(Users.email == email_, Users.password_text == password).first())}
+        id = 0
+        re = Users.query.filter(Users.email == email_, Users.password_text == password).first().__dict__
+        print(re['uid'])
+        res = {'status': bool(re),
+               'user_id':re['uid']
+               }
         print(str(res))
         return res
 

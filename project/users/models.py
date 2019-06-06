@@ -10,7 +10,7 @@ class Users(db.Model):
     email = db.Column(db.Text)
     password_text = db.Column(db.Text)
     reg_date = db.Column(db.DateTime, default=datetime.utcnow)
-
+    project = db.relationship("project", backref='project', uselist=False)
     def __init__(self, username, email, password_text):
         self.username = username
         self.email = email

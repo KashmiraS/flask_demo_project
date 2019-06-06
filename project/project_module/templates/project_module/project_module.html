@@ -1,6 +1,6 @@
 {% extends 'base.html'%}
 {%block conant%}
-<div class="jumbotron devunder"  style="background:url({{url_for('static',filename='img/coming-soon.jpg')}});">
+<div class="jumbotron devunder" style="background:url({{url_for('static',filename='img/coming-soon.jpg')}});">
     <div class="display-3">All Projects</div>
 </div>
 <div class="container">
@@ -13,11 +13,29 @@
     </div>
     <!--HEADER of the Project actions-->
 
+    <div>
+        {% if var|length==0 %}
+        <center>
+            <h1 class="display-4">Create Project</h1>
+            <span>NO Project is created</span>
+        </center>
+        {%else%}
+            {%for pro in var%}
+            <div class="card">
 
+                <div class="card-body btn-outline-info">
+                    <a href="{{url_for('project.project_view',pid=pro.pid)}}" style="color:black">
+                        <h5 class="card-title">{{pro.project_name}}</h5>
+                        <p class="card-text">{{pro.project_description}}</p>
+                    </a>
+                </div>
+            </div>
+            {%endfor%}
+        {%endif%}
+    </div>
 
 
 </div>
-
 
 
 {%endblock%}

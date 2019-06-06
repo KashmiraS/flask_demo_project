@@ -1,4 +1,4 @@
-from flask import url_for, render_template, Blueprint, request, redirect
+from flask import url_for, render_template, Blueprint, request, redirect,session
 from project import User, db ,host_address
 import requests
 import json
@@ -55,8 +55,10 @@ def login():
                 return render_template('login.html', form=form, Error_='NO_INPUT')
             else:
                 print('here input' + email_)
-                present = (json.loads((requests.get('{}/login/{}/{}'.format(host_address,email_, password))).text))['status']
+                res =json.loads((requests.get('{}/login/{}/{}'.format(host_address,email_, password))).text)
+                present = res['status']
                 if present:
+                    session['uid'] = res['user_id']
                     user = User()
                     user.id = email_
                     print(flask_login.current_user.is_authenticated)

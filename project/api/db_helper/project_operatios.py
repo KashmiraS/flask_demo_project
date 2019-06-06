@@ -1,4 +1,5 @@
-from project.project_module.models import project
+from project.project_module.models import project,project_wapper
+from project.users.models import Users
 from flask_restful import Resource
 from project import db
 from flask import request,jsonify,json
@@ -29,9 +30,26 @@ class project_crud(Resource):
         return jsonify(val)
 
 
+class get_project_all(Resource):
+    def get(self, id):
+        data = list()
+        # object_ = json.loads(request.data)
+        for row in project.query.filter(project.uid == id):
+            d = row.__dict__
+            d.pop('_sa_instance_state')
+            data.append(d)
+        print({'all_projects': data})
+        return {'all_projects': data}
+
 class get_project(Resource):
-    def get(self, pid):
-        print("Project REQUEST :{} ".format(pid))
-        res = project.query.get(pid)
-        print(str(res))
-        return res
+    def post(self):
+        data = request.data
+        dataDict = json.loads(data)
+        print(dataDict)
+        data = list()
+        for row in project.query.filter(db.and_(project.uid == dataDict['uid'],project.pid==dataDict['pid'])):
+            d = row.__dict__
+            d.pop('_sa_instance_state')
+            data.append(d)
+        print({'all_projects': data})
+        return {'all_projects': data}

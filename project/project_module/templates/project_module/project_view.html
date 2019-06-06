@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block conant%}
+<div class="jumbotron devunder" style="background:url({{url_for('static',filename='img/coming-soon.jpg')}});">
+    {% if data == 'NO'%}
+    <div class="display-3">NO PROJECT</div>
+    <div>Description: <span>This project is Not created by you!</span></div>
+</div>
+    {%else%}
+    <div class="display-3">{{data.project_name}}</div>
+    <div>Description: <span>{{data.project_description}}</span></div>
+</div>
+<div class="container">
+    <div class=" row">
+    <div class="card col-md-6">
+        <div class="card-body">
+            <h5 class="card-title">Project details</h5>
+            <div class="card-text">Date: <span>{{data.project_starting_date}}</span> to <span>{{data.project_releasing}}</span></div>
+        </div>
+    </div>
+
+    <div class="card col-md-6">
+        <div class="card-body">
+            <h5 class="card-title">Customer details</h5>
+            <div class="card-text">Person Name: <span>{{data.customer_name}}</span></div>
+            <div class="card-text">Contact: <span>{{data.customer_contact}}</span> | <span>{{data.customer_mail}}</span></div>
+                    <div class="card-text">Company:<span>{{data.customer_company_name}}</span><br><a href="#">{{data.customer_site}}</a></div>
+        </div>
+    </div>
+    </div>
+</div>
+{%endif%}
+{% endblock %}
