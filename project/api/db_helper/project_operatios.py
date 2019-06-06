@@ -28,7 +28,25 @@ class project_crud(Resource):
             }
             print('Error:"{}" ,"status":{}'.format(str(e),status))
         return jsonify(val)
-
+    def patch(self):
+        object_ = json.loads(request.data)
+        print('==>REQUEST PROJECT:{}'.format(json.dumps(object_)))
+        var = json.loads(object_['user'])
+        pro = project.query.filter(project.pid == var['pid'])
+        project_=json.loads(object_['project'])
+        pro.project_name = project_['project_name']
+        pro.project_description = project_['project_description']
+        pro.project_starting_date = project_['project_starting_date']
+        pro.project_releasing = project_['project_releasing']
+        pro.customer_name = project_['customer_name']
+        pro.customer_contact = project_['customer_contact']
+        pro.customer_mail = project_['customer_mail']
+        pro.customer_company_name = project_['customer_company_name']
+        pro.customer_site = project_['customer_site']
+        db.session.commit()
+        return {
+                'status': True
+            }
 
 class get_project_all(Resource):
     def get(self, id):

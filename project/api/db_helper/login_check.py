@@ -10,7 +10,8 @@ class login_helper(Resource):
         re = Users.query.filter(Users.email == email_, Users.password_text == password).first().__dict__
         print(re['uid'])
         res = {'status': bool(re),
-               'user_id':re['uid']
+               'user_id':re['uid'],
+                 'username': re['username']
                }
         print(str(res))
         return res
@@ -39,4 +40,4 @@ class register(Resource):
             db.session.commit()
         except Exception:
             status = False
-        return { 'user':email, 'status': status }
+        return { 'user':email, 'status': status ,'name' : username }

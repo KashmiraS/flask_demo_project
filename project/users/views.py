@@ -59,6 +59,7 @@ def login():
                 present = res['status']
                 if present:
                     session['uid'] = res['user_id']
+                    session['username'] = res['username']
                     user = User()
                     user.id = email_
                     print(flask_login.current_user.is_authenticated)

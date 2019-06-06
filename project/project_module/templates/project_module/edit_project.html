@@ -1,0 +1,65 @@
+{%extends 'base.html'%}
+{%block conant%}
+    <div class="title-header" style="border-radius:0px;">
+        <div class="display-4">Edit Project</div>
+    </div>
+    <div class="container">
+        <form method="POST">
+            <div class="row">
+                    <div class="left_border col-md-6 bg-light">
+                        <h3 class="display-4" style="font-size:30px">Project Details</h3>
+                        <!--Project Details-->
+                      <div class="form-group">
+                          {{form.project_name.label}}
+                          {{form.project_name(class_='form-control',placeholder="Name")}}
+                      </div>
+                      <div class="form-group">
+                          {{form.project_description.label}}
+                          {{form.project_description(class_='form-control',placeholder="Description")}}
+                      </div>
+                      <div class="form-group">
+                          {{form.project_starting_date.label}}
+                          {{form.project_starting_date(class_='form-control',placeholder="Starting Date")}}
+                      </div>
+                      <div class="form-group">
+                          {{form.project_releasing.label}}
+                          {{form.project_releasing(class_='form-control',placeholder="Releasing Date")}}
+                      </div>
+                    </div>
+                    <div class="left_border col-md-6">
+                        <h3 class="display-4" style="font-size:30px">Customer Details</h3>
+                        <!--Customer Details-->
+                      <div class="form-group">
+                          {{form.customer_name.label}}
+                          {{form.customer_name(class_='form-control',placeholder="Name")}}
+                      </div>
+                      <div class="form-group">
+                          {{form.customer_contact.label}}
+                          {{form.customer_contact(class_='form-control',placeholder="Contact number")}}
+                      </div>
+                      <div class="form-group">
+                          {{form.customer_mail.label}}
+                          {{form.customer_mail(class_='form-control',placeholder="Mail")}}
+                      </div>
+                      <div class="form-group">
+                          {{form.customer_company_name.label}}
+                          {{form.customer_company_name(class_='form-control',placeholder="Company Name")}}
+                      </div>
+                      <div class="form-group">
+                          {{form.customer_site.label}}
+                          {{form.customer_site(class_='form-control',placeholder="Site")}}
+                      </div>
+                    </div>
+            </div>
+            <div class="card-footer" style="margin-left:-15px;margin-right:-15px">
+                {{form.submit(class='btn btn-outline-primary')}}
+            </div>
+        </form>
+    </div>
+<script>
+    $(document).ready(function() {
+    $('#start_date').prop('type', 'date');
+    $('#releasing_date').prop('type', 'date');
+    });
+</script>
+{%endblock%}

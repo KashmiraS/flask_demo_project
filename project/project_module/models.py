@@ -41,6 +41,16 @@ class project(db.Model):
             'customer_company_name': self.customer_company_name,
             'customer_site': self.customer_site
         }
+    def update(self,project_):
+        self.project_name = project_['project_name']
+        self.project_description = project_['project_description']
+        self.project_starting_date = project_['project_starting_date']
+        self.project_releasing = project_['project_releasing']
+        self.customer_name = project_['customer_name']
+        self.customer_contact = project_['customer_contact']
+        self.customer_mail = project_['customer_mail']
+        self.customer_company_name = project_['customer_company_name']
+        self.customer_site = project_['customer_site']
 
     def object_to_object(self, object1,object2):
         for obj1, obj2 in object1.keys():

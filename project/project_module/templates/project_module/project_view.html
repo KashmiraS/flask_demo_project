@@ -8,13 +8,15 @@
     {%else%}
     <div class="display-3">{{data.project_name}}</div>
     <div>Description: <span>{{data.project_description}}</span></div>
+
+    <a href="{{url_for('project.edit',pid=data.pid)}}"> <button id="read-more" class="btn btn-primary float-md-right">Edit <i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>
 </div>
 <div class="container">
     <div class=" row">
     <div class="card col-md-6">
         <div class="card-body">
             <h5 class="card-title">Project details</h5>
-            <div class="card-text">Date: <span>{{data.project_starting_date}}</span> to <span>{{data.project_releasing}}</span></div>
+            <div class="card-text">Date: <span>{{data.project_starting_date[:-12] }}</span> to <span>{{data.project_releasing[:-12]}}</span></div>
         </div>
     </div>
 
