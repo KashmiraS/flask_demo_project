@@ -1,0 +1,41 @@
+{%extends 'base.html'%}
+{%block conant%}
+<div class="jumbotron devunder" style="background:url({{url_for('static',filename='img/coming-soon.jpg')}});">
+    <div class="display-3">Tasks of Project Name</div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <center>
+                        <h3><small>All Task</small></h3>
+                        <h2><span class="badge badge-secondary">234</span></h2>
+                    </center>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <center>
+                        <h3><small>Remaining Task</small></h3>
+                        <h2><span class="badge badge-secondary">1</span></h2>
+                    </center>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <center>
+                        <h3><small>Completed Task</small></h3>
+                        <h2><span class="badge badge-secondary">23</span></h2>
+                    </center>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{%endblock%}

@@ -16,3 +16,4 @@ class add_project(FlaskForm):
     customer_site = StringField('Company url ')
     # is software company
     submit = SubmitField('Create')
+    submit_save = SubmitField('Save')

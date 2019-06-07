@@ -29,12 +29,6 @@
       <li class="nav-item ">
         <a class="nav-link" href="{{url_for('index')}}">Home</a>
       </li>
-      <li class="nav-item ">
-        <a class="nav-link" href="{{url_for('users.registration')}}">Sign up</a>
-      </li>
-      <li class="nav-item ">
-        <a class="nav-link" href="{{url_for('users.login')}}">Sign in</a>
-      </li>
       {%else%}
       <li class="nav-item ">
         <a class="nav-link" href="{{url_for('users.index')}}">Dashboard</a>
@@ -42,12 +36,21 @@
       <li class="nav-item ">
         <a class="nav-link" href="{{url_for('project.index')}}">Projects</a>
       </li>
+      <li class="nav-item ">
+        <a class="nav-link" href="{{url_for('task.index')}}">Task</a>
+      </li>
       {%endif%}
     </ul>
       {%if current_user.is_authenticated%}
         <div class="form-inline my-2 my-lg-0">
           <a href="{{url_for('users.logout')}}">
             <button class="btn btn-outline-success my-2 my-sm-0"><span class="btn-outline-info" style="color:white">{{session['username']}}</span> Sign out</button>
+          </a>
+        </div>
+    {%else%}
+     <div class="form-inline my-2 my-lg-0">
+          <a href="{{url_for('users.login')}}">
+            <button class="btn btn-outline-success my-2 my-sm-0">Sign in</button>
           </a>
         </div>
       {%endif%}

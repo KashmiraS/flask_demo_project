@@ -16,6 +16,7 @@ class project(db.Model):
     customer_company_name = db.Column(db.Text)
     customer_site = db.Column(db.Text)
     uid = db.Column(db.Integer, db.ForeignKey(Users.uid))
+    #order = db.relationship("product", secondary=order_table)
 
     def __init__(self, project_):
         self.project_name = project_['project_name']

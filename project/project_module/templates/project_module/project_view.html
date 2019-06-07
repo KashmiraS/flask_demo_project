@@ -9,7 +9,10 @@
     <div class="display-3">{{data.project_name}}</div>
     <div>Description: <span>{{data.project_description}}</span></div>
 
-    <a href="{{url_for('project.edit',pid=data.pid)}}"> <button id="read-more" class="btn btn-primary float-md-right">Edit <i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>
+    <a href="{{url_for('project.edit',pid=data.pid)}}" > <button id="read-more" style="margin:2px" class="btn btn-primary float-md-right">Edit <i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>
+    <button  data-toggle="modal" data-target="#exampleModal" style="margin:2px" class="btn btn-primary float-md-right">Delete <i class="fa fa-trash" aria-hidden="true"></i></button>
+
+
 </div>
 <div class="container">
     <div class=" row">
@@ -29,6 +32,29 @@
         </div>
     </div>
     </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">You Really wants to delete?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <strong>{{data.project_name}}</strong> is belongs to <strong>{{data.customer_name}}</strong> please give your selection.
+          <br>
+          <strong>Note:</strong>No data will recover after deleting this project.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <a href="{{url_for('project.delete',pid=data.pid)}}"> <button type="button" class="btn btn-primary">Delete anyway</button></a>
+      </div>
+    </div>
+  </div>
 </div>
 {%endif%}
 {% endblock %}

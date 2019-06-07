@@ -49,6 +49,7 @@ def new_project():
             return redirect(url_for('project.index'))
     return render_template('new_project.html', form=form)
 
+
 @project_print.route('/edit/<int:pid>', methods=['GET', 'POST'])
 @login_required
 def edit(pid):
@@ -58,8 +59,8 @@ def edit(pid):
     print('RESPONSE : {}'.format(str(res)))
     if len(res['all_projects']) == 0:
         return render_template('project_view.html', data='NO')
-    data=res['all_projects'][0]
-    if len(data)==0:
+    data = res['all_projects'][0]
+    if len(data) == 0:
         return redirect(url_for('project.index'))
     else:
         if request.method == 'GET':
@@ -89,8 +90,8 @@ def edit(pid):
         # res = Response(json.dumps(data), status=200, mimetype='application/json')
         print('==>>REQUEST : {}'.format(str(project_obj.__dict__)))
         up_req = {
-            'user':json.dumps(req),
-            'project':json.dumps(project_obj.__dict__)
+            'user': json.dumps(req),
+            'project': json.dumps(project_obj.__dict__)
         }
         data = json.loads(requests.patch('http://127.0.0.1:5000/api/project', json.dumps(up_req)).text)
         print('{} response '.format(data))
@@ -98,12 +99,24 @@ def edit(pid):
             return redirect(url_for('project.index'))
     return render_template('edit_project.html', form=form)
 
+
 @project_print.route('/view')
 @login_required
 def project_view():
-    req = {'pid': request.args.get('pid'),'uid': session['uid']}
-    res = json.loads(requests.post('http://127.0.0.1:5000/api/project/view',json.dumps(req)).text)
+    req = {'pid': request.args.get('pid'), 'uid': session['uid']}
+    res = json.loads(requests.post('http://127.0.0.1:5000/api/project/view', json.dumps(req)).text)
     print('RESPONSE : {}'.format(str(res)))
-    if len(res['all_projects'])==0:
+    if len(res['all_projects']) == 0:
         return render_template('project_view.html', data='NO')
     return render_template('project_view.html', data=res['all_projects'][0])
+
+
+@project_print.route('/delete')
+@login_required
+def delete():
+    req = {'pid': request.args.get('pid'), 'uid': session['uid']}
+    res = json.loads(requests.post('http://127.0.0.1:5000/api/project/delete', json.dumps(req)).text)
+    print('RESPONSE : {}'.format(str(res)))
+    if res['status']:
+        return redirect(url_for('project.index'))
+    return redirect(url_for('project.project_view'))

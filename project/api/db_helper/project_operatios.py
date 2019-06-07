@@ -32,12 +32,14 @@ class project_crud(Resource):
         object_ = json.loads(request.data)
         print('==>REQUEST PROJECT:{}'.format(json.dumps(object_)))
         var = json.loads(object_['user'])
-        pro = project.query.filter(project.pid == var['pid'])
-        project_=json.loads(object_['project'])
+        pro = project.query.get(var['pid'])
+        project_ = json.loads(object_['project'])
         pro.project_name = project_['project_name']
         pro.project_description = project_['project_description']
-        pro.project_starting_date = project_['project_starting_date']
-        pro.project_releasing = project_['project_releasing']
+        if not (project_['project_starting_date']==None):
+            pro.project_starting_date = project_['project_starting_date']
+        if not (project_['project_releasing']==None):
+            pro.project_releasing = project_['project_releasing']
         pro.customer_name = project_['customer_name']
         pro.customer_contact = project_['customer_contact']
         pro.customer_mail = project_['customer_mail']
@@ -71,3 +73,19 @@ class get_project(Resource):
             data.append(d)
         print({'all_projects': data})
         return {'all_projects': data}
+
+class delete_project(Resource):
+    def post(self):
+        status = False
+        data = request.data
+        dataDict = json.loads(data)
+        print(dataDict)
+        try:
+            status = project.query.filter(db.and_(project.uid == dataDict['uid'],project.pid==dataDict['pid'])).delete()
+            db.session.commit()
+        except Exception:
+            pass
+
+
+        print({'status': status})
+        return {'status': status}

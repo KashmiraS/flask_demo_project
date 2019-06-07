@@ -70,12 +70,14 @@ def unauthorized_handler():
 #############################
 from project.users.views import user_print
 from project.project_module.views import project_print
+from project.task.views import task_view
 
 # from project.api.db_helper.login_check import login
 
 # app.register_blueprint(api, url_prefix='/api')
 app.register_blueprint(user_print, url_prefix='/users')
 app.register_blueprint(project_print, url_prefix='/project')
+app.register_blueprint(task_view, url_prefix='/task')
 
 
 ###########
@@ -98,7 +100,7 @@ def page_not_found(e):
 from project.api.db_helper.login_check import login_helper
 from project.api.db_helper.login_check import user_check
 from project.api.db_helper.login_check import register
-from project.api.db_helper.project_operatios import get_project_all,project_crud,get_project
+from project.api.db_helper.project_operatios import get_project_all,project_crud,get_project,delete_project
 
 api_obj.add_resource(login_helper, '/api/login/<string:email_>/<string:password>')
 api_obj.add_resource(user_check, '/api/user_check/<string:email_>')
@@ -107,4 +109,5 @@ api_obj.add_resource(register, '/api/register/<string:username>/<string:email>/<
 api_obj.add_resource(get_project_all, '/api/project/all/<int:id>')
 api_obj.add_resource(project_crud, '/api/project')
 api_obj.add_resource(get_project, '/api/project/view')
+api_obj.add_resource(delete_project, '/api/project/delete')
 
