@@ -1,0 +1,50 @@
+{%extends 'base.html'%}
+{%block conant%}
+    <div class="title-header" style="border-radius:0px;">
+        <div class="display-4">Share Project</div>
+    </div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <form method="POST">
+                        <div class="form-group">
+                            {{form.mail_id.label}}
+                            {{form.mail_id(class='form-control',placeholder='Mail id')}}
+                        </div>
+                        <div class="form-group">
+                            {{form.submit(class='btn btn-block btn-success')}}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            {% with messages = get_flashed_messages() %}
+               {% if messages %}
+                  {% for message in messages %}
+                    {% if  message =='Project Shared Successfully!'%}
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                          <strong>Success!</strong> {{message}}
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                    {%else%}
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                          <strong>Error!</strong> {{message}}<br>
+                            Please Check mail id it must be registered with this system!
+                          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                    {%endif%}
+                  {% endfor %}
+               {% endif %}
+            {% endwith %}
+        </div>
+    </div>
+</div>
+{%endblock%}

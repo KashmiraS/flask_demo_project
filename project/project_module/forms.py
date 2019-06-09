@@ -17,3 +17,7 @@ class add_project(FlaskForm):
     # is software company
     submit = SubmitField('Create')
     submit_save = SubmitField('Save')
+
+class share_project_form(FlaskForm):
+    mail_id =StringField('Please use registered user id for sharing project')
+    submit = SubmitField('share')

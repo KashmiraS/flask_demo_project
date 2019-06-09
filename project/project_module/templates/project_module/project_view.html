@@ -7,15 +7,15 @@
 </div>
     {%else%}
     <div class="display-3">{{data.project_name}}</div>
-    <div>Description: <span>{{data.project_description}}</span></div>
     <a href="{{url_for('task.index',project_id=data.pid)}}" > <button id="read-more" style="margin:2px" class="btn btn-primary float-md-left">Tasks <i class="fa fa-tasks" aria-hidden="true"></i></button></a>
     <a href="{{url_for('project.edit',pid=data.pid)}}" > <button id="read-more" style="margin:2px" class="btn btn-primary float-md-right">Edit <i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>
     <button  data-toggle="modal" data-target="#exampleModal" style="margin:2px" class="btn btn-primary float-md-right">Delete <i class="fa fa-trash" aria-hidden="true"></i></button>
+    <a href="{{url_for('project.share',project_id=data.pid)}}" > <button id="read-more" style="margin:2px" class="btn btn-primary float-md-right">Share <i class="fa fa-share" aria-hidden="true"></i></button></a>
 
 
 </div>
 <div class="container">
-    <div class=" row">
+    <div class="row">
     <div class="card col-md-6">
         <div class="card-body">
             <h5 class="card-title">Project details</h5>
@@ -31,6 +31,35 @@
                     <div class="card-text">Company:<span>{{data.customer_company_name}}</span><br><a href="#">{{data.customer_site}}</a></div>
         </div>
     </div>
+    </div>
+    <div class="row">
+        <div class="card col-md-12">
+            <div class="card-body">
+                <strong>Description:</strong> <span>{{data.project_description}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <h3 class="card-body">Team</h3>
+        <div class="card col-md-12">
+            <div class="row">
+                {%for u in users%}
+                    <div class="card">
+                        <div class="card-header">
+                            <center>
+                                <img width="60" height="60" src="{{url_for('static',filename='img/profile.png')}}">
+                            </center>
+                            <div class="card-body">
+                                <center>
+                                    <h5>{{u.username}}</h5>
+                                    <small>{{u.email}}</small>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
+                {%endfor%}
+            </div>
+        </div>
     </div>
 </div>
 

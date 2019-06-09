@@ -6,6 +6,11 @@ from project.utils.conversions import to_date,todate_time
 from project.utils.statics_data import date_in_result
 
 
+share_project = db.Table('share_project', db.metadata,
+                         db.Column('uid', db.Integer, db.ForeignKey(Users.uid)),
+                         db.Column('pid', db.Integer, db.ForeignKey('project.pid')),
+                         db.Column('share_date', db.DateTime, default=datetime.utcnow)
+                         )
 class project(db.Model):
     pid = db.Column(db.Integer, primary_key=True)
     project_name = db.Column(db.Text)
@@ -19,8 +24,7 @@ class project(db.Model):
     customer_company_name = db.Column(db.Text)
     customer_site = db.Column(db.Text)
     uid = db.Column(db.Integer, db.ForeignKey(Users.uid))
-    tasks = db.relationship('task_of_project',backref= 'task_of_project',passive_deletes=True)
-    #share = db.relationship("product", secondary=order_table,backref="parents")
+    share = db.relationship("Users", secondary=share_project,backref="Users",lazy='dynamic')
 
 
     def __init__(self, project_):
@@ -34,6 +38,7 @@ class project(db.Model):
         self.customer_company_name = project_['customer_company_name']
         self.customer_site = project_['customer_site']
         self.uid = project_['uid']
+        self.share.append(Users.query.get(project_['uid']))
 
     def __repr__(self):
         return {
@@ -45,7 +50,8 @@ class project(db.Model):
             'customer_contact': self.customer_contact,
             'customer_mail': self.customer_mail,
             'customer_company_name': self.customer_company_name,
-            'customer_site': self.customer_site
+            'customer_site': self.customer_site,
+            'share': self.share
         }
     def update(self,project_):
         print(type(project_))

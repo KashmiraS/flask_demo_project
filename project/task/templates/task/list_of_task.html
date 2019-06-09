@@ -65,7 +65,16 @@
                 {%endfor%}
             {%endif%}
         {% if not exists %}
-        <h4 class="display-4">NO RECORD</h4>
+        <h4 class="display-4">
+            {%if list_id==0%}
+                NoRemaining Task
+            {%elif list_id==1%}
+                No Completed Task
+            {%else%}
+                No Task
+            {%endif%}
+        </h4>
+        <img src="{{url_for('static',filename='img/noresult.svg')}}" height="90px" width="90px"/>
         {%endif%}
 
     </div>

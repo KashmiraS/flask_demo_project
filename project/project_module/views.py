@@ -1,11 +1,12 @@
-from flask import request, redirect, render_template, Blueprint, jsonify, json, Response, url_for, session
+from flask import request, redirect, render_template, Blueprint, jsonify, json, Response, url_for, session, flash
 import requests
 from flask_login import login_required
-from project.project_module.forms import add_project
+from project.project_module.forms import add_project, share_project_form
 from project.project_module.models import project_wapper
-from project.utils.statics_data import must_in_result,date_in_result,not_in_result
-from project.utils.conversions import todate_time,to_date,with_utf
+from project.utils.statics_data import must_in_result, date_in_result, not_in_result
+from project.utils.conversions import todate_time, to_date, with_utf
 import datetime
+
 project_print = Blueprint('project', __name__, template_folder='templates/project_module')
 
 
@@ -68,47 +69,27 @@ def edit(pid):
         print(type(data))
         if request.method == 'GET':
             for key, val in data.items():
-                if key in ['project_name','project_description','customer_site','customer_mail','customer_name']:
-                   form[key].data = val
-                if key in ['project_starting_date','project_releasing']:
+                if key in ['project_name', 'project_description', 'customer_site', 'customer_mail', 'customer_name']:
+                    form[key].data = val
+                if key in ['project_starting_date', 'project_releasing']:
                     form[key].value = with_utf(to_date(val))
-                    print('KEY >{} {}'.format(type(todate_time(val)),val))
-            #     if key in date_in_result:
-            #         form[key].date = '12-6-2019'#todate_time(val).date()#datetime.date(todate_time(val)).date()+""
-            # form.project_name.data = data['project_name']
-            # form.project_description.data = data['project_description']
-            # form.project_starting_date.date = data['project_starting_date']
-            # form.project_releasing.date = data['project_releasing']
-            # form.customer_name.data = data['customer_name']
-            # form.customer_contact.data = data['customer_contact']
-            # form.customer_mail.data = data['customer_mail']
-            # form.customer_company_name.data = data['customer_company_name']
-            # form.customer_site.data = data['customer_site']
+                    print('KEY >{} {}'.format(type(todate_time(val)), val))
+
     if request.method == 'POST':
         project_ = dict()
         for key, val in data.items():
             if not key in not_in_result:
                 project_[key] = form[key].data
-        '''project_['project_name'] = form.project_name.data
-        project_['project_description'] = form.project_description.data
-        project_['project_starting_date'] = form.project_starting_date.data
-        project_['project_releasing'] = form.project_releasing.data
-
-        project_['customer_name'] = form.customer_name.data
-        project_['customer_contact'] = form.customer_contact.data
-        project_['customer_mail'] = form.customer_mail.data
-        project_['customer_company_name'] = form.customer_company_name.data
-        project_['customer_site'] = form.customer_site.data'''
         project_['uid'] = session['uid']
         project_obj = project_wapper(project_)
-        # res = Response(json.dumps(data), status=200, mimetype='application/json')
         print('==>>REQUEST : {}'.format(str(project_obj.__dict__)))
         up_req = {
             'user': req,
             'project': project_obj.__dict__
         }
         print('\n\n------<>{}'.format(up_req))
-        print('REQUEST TO SAVE EDITED >>{}'.format(requests.patch('http://127.0.0.1:5000/api/project', json.dumps(up_req)).text))
+        print('REQUEST TO SAVE EDITED >>{}'.format(
+            requests.patch('http://127.0.0.1:5000/api/project', json.dumps(up_req)).text))
         data = json.loads(requests.patch('http://127.0.0.1:5000/api/project', json.dumps(up_req)).text)
         print('{} response '.format(data))
         if (data['status']):
@@ -121,12 +102,13 @@ def edit(pid):
 def project_view():
     req = {'pid': request.args.get('pid'), 'uid': session['uid']}
     res = json.loads(requests.post('http://127.0.0.1:5000/api/project/view', json.dumps(req)).text)
+    users = json.loads(requests.post('http://127.0.0.1:5000/api/project/users', json.dumps(req)).text)
     print('RESPONSE : {}'.format(str(res)))
     if len(res['all_projects']) == 0:
         return render_template('project_view.html', data='NO')
     for x in date_in_result:
-        res['all_projects'][0][x]=todate_time(res['all_projects'][0][x])
-    return render_template('project_view.html', data=res['all_projects'][0])
+        res['all_projects'][0][x] = todate_time(res['all_projects'][0][x])
+    return render_template('project_view.html', data=res['all_projects'][0],users=users['users'])
 
 
 @project_print.route('/delete')
@@ -138,3 +120,18 @@ def delete():
     if res['status']:
         return redirect(url_for('project.index'))
     return redirect(url_for('project.project_view'))
+
+
+@project_print.route('/share/<int:project_id>', methods=['GET', 'POST'])
+@login_required
+def share(project_id):
+    form = share_project_form()
+    if request.method == 'POST':
+        req = {'pid': project_id, 'uid': session['uid'], 'mail_id': str(form.mail_id.data)}
+        res = json.loads(requests.post('http://127.0.0.1:5000/api/project/share', json.dumps(req)).text)
+        print(str(res))
+        if res['status']:
+            flash('Project Shared Successfully!')
+        else:
+            flash('Project Not Shared!')
+    return render_template('share_project.html', form=form)

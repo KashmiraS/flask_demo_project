@@ -17,7 +17,8 @@
         {% if var|length==0 %}
         <center>
             <h1 class="display-4">Create Project</h1>
-            <span>-- No Project is created --</span>
+            <span>-- No Project is created --</span><br>
+            <img src="{{url_for('static',filename='img/noresult.svg')}}" height="90px" width="90px"/>
         </center>
         {%else%}
             {%for pro in var%}
@@ -26,7 +27,7 @@
                 <div class="card-body btn-outline-info">
                     <a href="{{url_for('project.project_view',pid=pro.pid)}}" style="color:black">
                         <h5 class="card-title">{{pro.project_name}}</h5>
-                        <p class="card-text">{{pro.project_description}}</p>
+                        <p class="card-text one_line">{{pro.project_description}}</p>
                     </a>
                 </div>
             </div>

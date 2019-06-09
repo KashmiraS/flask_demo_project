@@ -4,11 +4,6 @@ from project.project_module.models import project
 from project.utils.conversions import to_date, todate_time, with_utf
 import datetime
 
-share_project = db.Table('share_project', db.metadata,
-                         db.Column('uid', db.Integer, db.ForeignKey(Users.uid)),
-                         db.Column('pid', db.Integer, db.ForeignKey(project.pid)),
-                         db.Column('share_date', db.DateTime, default=datetime.datetime.utcnow)
-                         )
 
 
 class task_of_project(db.Model):

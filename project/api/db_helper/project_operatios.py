@@ -55,7 +55,8 @@ class get_project_all(Resource):
     def get(self, id):
         data = list()
         # object_ = json.loads(request.data)
-        for row in project.query.filter(project.uid == id):
+        us = Users.query.get(id)
+        for row in project.query.filter(project.share.contains(us)):
             d = row.__dict__
             d.pop('_sa_instance_state')
             print(d)
@@ -71,7 +72,8 @@ class get_project(Resource):
         dataDict = json.loads(data)
         print(dataDict)
         data = list()
-        for row in project.query.filter(db.and_(project.uid == dataDict['uid'],project.pid==dataDict['pid'])):
+        us = Users.query.get(dataDict['uid'])
+        for row in project.query.filter(db.and_(project.share.contains(us),project.pid==dataDict['pid'])):
             d = row.__dict__
             d.pop('_sa_instance_state')
             for x in date_in_result:
@@ -87,12 +89,52 @@ class delete_project(Resource):
         dataDict = json.loads(data)
         print(dataDict)
         try:
+            status = project.query.filter(db.and_(project.uid == dataDict['uid'],project.pid==dataDict['pid'])).first()
+            status.share.clear()
             status = project.query.filter(db.and_(project.uid == dataDict['uid'],project.pid==dataDict['pid'])).delete()
             status = task_of_project.query.filter(task_of_project.pid==dataDict['pid']).delete()
             db.session.commit()
+            status =True
         except Exception:
             pass
-
-
         print({'status': status})
         return {'status': status}
+
+class share_project(Resource):
+    def post(self):
+        status = False
+        data = request.data
+        dataDict = json.loads(data)
+        print(dataDict)
+        try:
+            us = Users.query.filter(Users.email == dataDict['mail_id']).first()
+            pro = project.query.get(dataDict['pid'])
+            pro.share.append(us)
+            db.session.commit()
+            status=True
+            print({'status': status})
+            return {'status': status}
+        except Exception as e:
+            print({'status': status,'error':str(e)})
+            return {'status': status,'error':str(e)}
+
+class all_project_users(Resource):
+    def post(self):
+        status = False
+        data = request.data
+        dataDict = json.loads(data)
+        print(dataDict)
+        try:
+            us = Users.query.get(1)
+            us = project.query.filter(project.share.contains(us)).first()
+            users=list()
+            for x in us.share:
+                d = x.__dict__
+                d.pop('_sa_instance_state')
+                d.pop('password_text')
+                users.append(d)
+            return {'status': status,
+                    'users':json.loads(json.dumps(users))}
+        except Exception as e:
+            print({'status': status,'error':str(e)})
+            return {'status': status,'error':str(e)}
