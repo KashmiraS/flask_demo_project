@@ -1,0 +1,47 @@
+{%extends 'base.html'%}
+{%block conant%}
+<div class="title-header" style="border-radius:0px;">
+    <div class="display-4">Create Task</div>
+</div>
+<div class="container">
+    Project ID {{project_id}}
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <form method="POST">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-group">
+                            {{form.title.label}}
+                            {{form.title(class='form-control')}}
+                        </div>
+                        <div class="form-group">
+                            {{form.details.label}}
+                            {{form.details(class='form-control')}}
+                        </div>
+                        <div class="form-group">
+                            {{form.start_date.label}}
+                            {{form.start_date(class='form-control')}}
+                        </div>
+                        <div class="form-group">
+                            {{form.end_date.label}}
+                            {{form.end_date(class='form-control')}}
+                        </div>
+                        <div class="form-group">
+                            {{form.submit(class='btn btn-success')}}
+                        </div>
+                </div>
+            </div>
+            </form>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+    $('#start_date').prop('type', 'date');
+    $('#enddate').prop('type', 'date');
+    });
+</script>
+{%endblock%}

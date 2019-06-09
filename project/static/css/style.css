@@ -12,3 +12,8 @@ background-repeat: no-repeat!important;
     border-left: .25rem solid #b21d2180!important;
     border-radius: 0px 0px 0px 0px;
 }
+.one_line{
+text-overflow: ellipsis;
+overflow: hidden;
+white-space: nowrap;
+}

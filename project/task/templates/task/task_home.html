@@ -1,38 +1,45 @@
 {%extends 'base.html'%}
 {%block conant%}
 <div class="jumbotron devunder" style="background:url({{url_for('static',filename='img/coming-soon.jpg')}});">
-    <div class="display-3">Tasks of Project Name</div>
+    <div class="display-3">Tasks of {{project_name}}</div>
+    <a href="{{url_for('task.create_task',project_id=project_id)}}" > <button id="read-more" style="margin:2px" class="btn btn-primary float-md-left">Create Task <i class="fa fa-plus-square" aria-hidden="true"></i></button></a>
 </div>
 <div class="container">
     <div class="row">
         <div class="col-md-4">
             <div class="card">
-                <div class="card-body">
-                    <center>
-                        <h3><small>All Task</small></h3>
-                        <h2><span class="badge badge-secondary">234</span></h2>
-                    </center>
-                </div>
+                <a href="{{url_for('task.view',list_id=3,project_id=project_id)}}">
+                    <div class="card-body">
+                        <center>
+                            <h3><small>All Task</small></h3>
+                            <h2><span class="badge badge-secondary">{{count['all']}}</span></h2>
+                        </center>
+                    </div>
+                </a>
             </div>
         </div>
         <div class="col-md-4">
             <div class="card">
-                <div class="card-body">
-                    <center>
-                        <h3><small>Remaining Task</small></h3>
-                        <h2><span class="badge badge-secondary">1</span></h2>
-                    </center>
-                </div>
+                <a href="{{url_for('task.view',list_id=0,project_id=project_id)}}">
+                    <div class="card-body">
+                        <center>
+                            <h3><small>Remaining Task</small></h3>
+                            <h2><span class="badge badge-secondary">{{count['remaining']}}</span></h2>
+                        </center>
+                    </div>
+                </a>
             </div>
         </div>
         <div class="col-md-4">
             <div class="card">
-                <div class="card-body">
-                    <center>
-                        <h3><small>Completed Task</small></h3>
-                        <h2><span class="badge badge-secondary">23</span></h2>
-                    </center>
-                </div>
+                <a href="{{url_for('task.view',list_id=1,project_id=project_id)}}">
+                    <div class="card-body">
+                        <center>
+                            <h3><small>Completed Task</small></h3>
+                            <h2><span class="badge badge-secondary">{{count['complete']}}</span></h2>
+                        </center>
+                    </div>
+                </a>
             </div>
         </div>
     </div>

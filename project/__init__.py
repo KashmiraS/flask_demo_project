@@ -101,6 +101,7 @@ from project.api.db_helper.login_check import login_helper
 from project.api.db_helper.login_check import user_check
 from project.api.db_helper.login_check import register
 from project.api.db_helper.project_operatios import get_project_all,project_crud,get_project,delete_project
+from project.api.db_helper.task_operations import create_task,get_task,delete_task,markings
 
 api_obj.add_resource(login_helper, '/api/login/<string:email_>/<string:password>')
 api_obj.add_resource(user_check, '/api/user_check/<string:email_>')
@@ -110,4 +111,8 @@ api_obj.add_resource(get_project_all, '/api/project/all/<int:id>')
 api_obj.add_resource(project_crud, '/api/project')
 api_obj.add_resource(get_project, '/api/project/view')
 api_obj.add_resource(delete_project, '/api/project/delete')
+api_obj.add_resource(create_task, '/api/task/create')
+api_obj.add_resource(get_task, '/api/task/all')
+api_obj.add_resource(delete_task, '/api/task/delete')
+api_obj.add_resource(markings, '/api/task/marking')
 

@@ -1,14 +1,17 @@
 from project import db
+from sqlalchemy.orm import backref
 from datetime import datetime
 from project.users.models import Users
+from project.utils.conversions import to_date,todate_time
+from project.utils.statics_data import date_in_result
 
 
 class project(db.Model):
     pid = db.Column(db.Integer, primary_key=True)
     project_name = db.Column(db.Text)
     project_description = db.Column(db.Text)
-    project_starting_date = db.Column(db.Text, default=datetime.utcnow)
-    project_releasing = db.Column(db.Text, default=datetime.utcnow)
+    project_starting_date = db.Column(db.Date, default=datetime.utcnow)
+    project_releasing = db.Column(db.Date, default=datetime.utcnow)
     # just for demo I used customer in this
     customer_name = db.Column(db.Text)
     customer_contact = db.Column(db.Text)
@@ -16,13 +19,15 @@ class project(db.Model):
     customer_company_name = db.Column(db.Text)
     customer_site = db.Column(db.Text)
     uid = db.Column(db.Integer, db.ForeignKey(Users.uid))
-    #order = db.relationship("product", secondary=order_table)
+    tasks = db.relationship('task_of_project',backref= 'task_of_project',passive_deletes=True)
+    #share = db.relationship("product", secondary=order_table,backref="parents")
+
 
     def __init__(self, project_):
         self.project_name = project_['project_name']
         self.project_description = project_['project_description']
-        self.project_starting_date = project_['project_starting_date']
-        self.project_releasing = project_['project_releasing']
+        self.project_starting_date = todate_time(project_['project_starting_date']).date()
+        self.project_releasing = todate_time( project_['project_releasing']).date()
         self.customer_name = project_['customer_name']
         self.customer_contact = project_['customer_contact']
         self.customer_mail = project_['customer_mail']
@@ -43,10 +48,13 @@ class project(db.Model):
             'customer_site': self.customer_site
         }
     def update(self,project_):
+        print(type(project_))
         self.project_name = project_['project_name']
         self.project_description = project_['project_description']
-        self.project_starting_date = project_['project_starting_date']
-        self.project_releasing = project_['project_releasing']
+        if 'project_starting_date' in project_:
+            self.project_starting_date = todate_time(project_['project_starting_date']).date()
+        if 'project_releasing' in project_:
+            self.project_releasing = todate_time(project_['project_releasing']).date()
         self.customer_name = project_['customer_name']
         self.customer_contact = project_['customer_contact']
         self.customer_mail = project_['customer_mail']
@@ -63,8 +71,10 @@ class project_wapper():
     def __init__(self,project_):
         self.project_name = project_['project_name']
         self.project_description = project_['project_description']
-        self.project_starting_date = project_['project_starting_date']
-        self.project_releasing = project_['project_releasing']
+        if not project_['project_starting_date'] ==None:
+            self.project_starting_date = project_['project_starting_date']#datetime.strptime(str(project_['project_starting_date']), '%a, %d %b %Y %X %Z').date()
+        if not project_['project_releasing'] == None:
+            self.project_releasing =project_['project_releasing']# datetime.strptime(str(project_['project_releasing']), '%a, %d %b %Y %X %Z').date()
         self.customer_name = project_['customer_name']
         self.customer_contact = project_['customer_contact']
         self.customer_mail = project_['customer_mail']
