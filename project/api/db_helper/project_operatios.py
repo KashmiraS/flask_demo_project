@@ -89,14 +89,19 @@ class delete_project(Resource):
         dataDict = json.loads(data)
         print(dataDict)
         try:
-            status = project.query.filter(db.and_(project.uid == dataDict['uid'],project.pid==dataDict['pid'])).first()
-            status.share.clear()
-            status = project.query.filter(db.and_(project.uid == dataDict['uid'],project.pid==dataDict['pid'])).delete()
-            status = task_of_project.query.filter(task_of_project.pid==dataDict['pid']).delete()
+
+            try:
+                status = project.query.get(dataDict['pid'])
+                status.share.clear()
+            except Exception as e:
+                print(f'Error {e} ')
+            status = project.query.filter(
+                db.and_(project.uid == dataDict['uid'], project.pid == dataDict['pid'])).delete()
+            status = task_of_project.query.filter(task_of_project.pid == dataDict['pid']).delete()
             db.session.commit()
-            status =True
-        except Exception:
-            pass
+            status = True
+        except Exception as e:
+            print(str(e))
         print({'status': status})
         return {'status': status}
 
@@ -125,16 +130,20 @@ class all_project_users(Resource):
         dataDict = json.loads(data)
         print(dataDict)
         try:
-            us = Users.query.get(1)
-            us = project.query.filter(project.share.contains(us)).first()
+            us = Users.query.get(dataDict['uid'])
+            us = project.query.filter(db.and_(project.share.contains(us),project.pid==dataDict['pid'])).first()
             users=list()
             for x in us.share:
                 d = x.__dict__
                 d.pop('_sa_instance_state')
                 d.pop('password_text')
                 users.append(d)
-            return {'status': status,
+            data ={'status': status,
                     'users':json.loads(json.dumps(users))}
+            print('\n\nusers {}:{}'.format(dataDict['uid'],data))
+            return data
         except Exception as e:
             print({'status': status,'error':str(e)})
             return {'status': status,'error':str(e)}
+
+

@@ -3,14 +3,13 @@ from project import db  # GET DATABASE OBJECT
 # https://docs.sqlalchemy.org/en/13/orm/basic_relationships.html
 from datetime import datetime
 
-
 class Users(db.Model):
     uid = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.Text)
     email = db.Column(db.Text)
     password_text = db.Column(db.Text)
     reg_date = db.Column(db.DateTime, default=datetime.utcnow)
-    project = db.relationship("project", backref='project',lazy='dynamic')
+    project = db.relationship("project",backref='project',lazy='dynamic',secondary='share_project')
     def __init__(self, username, email, password_text):
         self.username = username
         self.email = email

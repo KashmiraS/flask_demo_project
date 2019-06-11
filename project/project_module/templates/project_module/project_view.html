@@ -7,11 +7,12 @@
 </div>
     {%else%}
     <div class="display-3">{{data.project_name}}</div>
+    {%if (data.uid==session['uid'])%}
     <a href="{{url_for('task.index',project_id=data.pid)}}" > <button id="read-more" style="margin:2px" class="btn btn-primary float-md-left">Tasks <i class="fa fa-tasks" aria-hidden="true"></i></button></a>
     <a href="{{url_for('project.edit',pid=data.pid)}}" > <button id="read-more" style="margin:2px" class="btn btn-primary float-md-right">Edit <i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>
     <button  data-toggle="modal" data-target="#exampleModal" style="margin:2px" class="btn btn-primary float-md-right">Delete <i class="fa fa-trash" aria-hidden="true"></i></button>
     <a href="{{url_for('project.share',project_id=data.pid)}}" > <button id="read-more" style="margin:2px" class="btn btn-primary float-md-right">Share <i class="fa fa-share" aria-hidden="true"></i></button></a>
-
+    {%endif%}
 
 </div>
 <div class="container">
@@ -36,6 +37,7 @@
         <div class="card col-md-12">
             <div class="card-body">
                 <strong>Description:</strong> <span>{{data.project_description}}</span>
+
             </div>
         </div>
     </div>
@@ -44,18 +46,26 @@
         <div class="card col-md-12">
             <div class="row">
                 {%for u in users%}
-                    <div class="card">
-                        <div class="card-header">
+                <div class="col-md-3 align-items-stretch card card-body">
+                    <div class="">
+                        <div class="">
                             <center>
                                 <img width="60" height="60" src="{{url_for('static',filename='img/profile.png')}}">
                             </center>
                             <div class="card-body">
                                 <center>
+                                    {%if (data.uid==u.uid)%}
+                                    <small><span class="badge badge-success">Owner</span></small>
+                                    {%endif%}
+                                    {%if(u.uid==session['uid'])%}
+                                    <small><span class="badge badge-danger">You</span></small>
+                                    {%endif%}
                                     <h5>{{u.username}}</h5>
                                     <small>{{u.email}}</small>
                                 </center>
                             </div>
                         </div>
+                    </div>
                     </div>
                 {%endfor%}
             </div>

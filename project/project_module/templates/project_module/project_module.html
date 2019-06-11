@@ -21,7 +21,7 @@
             <img src="{{url_for('static',filename='img/noresult.svg')}}" height="90px" width="90px"/>
         </center>
         {%else%}
-            {%for pro in var%}
+            {%for pro in var[::-1]%}
             <div class="card">
 
                 <div class="card-body btn-outline-info">
