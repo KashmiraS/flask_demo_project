@@ -1,5 +1,6 @@
 from flask import request, redirect, render_template, Blueprint, jsonify, json, Response, url_for, session, flash
 import requests
+from project import host_address
 from flask_login import login_required
 from project.project_module.forms import add_project, share_project_form
 from project.project_module.models import project_wapper
@@ -16,7 +17,7 @@ def index():
     uid_send = dict()
     uid_send["uid"] = session['uid']
     print(json.dumps(uid_send))
-    data = json.loads(requests.get('http://127.0.0.1:5000/api/project/all/{}'.format(session['uid'])).text)
+    data = json.loads(requests.get('{}/project/all/{}'.format(host_address,session['uid'])).text)
     var = list()
     try:
         var = data['all_projects']
@@ -46,7 +47,7 @@ def new_project():
         project_obj = project_wapper(project_)
         # res = Response(json.dumps(data), status=200, mimetype='application/json')
         print('==>>REQUEST : {}'.format(str(project_obj.__dict__)))
-        data = json.loads(requests.post('http://127.0.0.1:5000/api/project', json.dumps(project_obj.__dict__)).text)
+        data = json.loads(requests.post(f'{host_address}/project', json.dumps(project_obj.__dict__)).text)
         print('{} response '.format(data))
         if (data['status']):
             return redirect(url_for('project.index'))
@@ -58,7 +59,7 @@ def new_project():
 def edit(pid):
     form = add_project()
     req = {'pid': pid, 'uid': session['uid']}
-    res = json.loads(requests.post('http://127.0.0.1:5000/api/project/view', json.dumps(req)).text)
+    res = json.loads(requests.post(f'{host_address}/project/view', json.dumps(req)).text)
     print('RESPONSE : {}'.format(str(res)))
     data = res['all_projects'][0]
     if len(res['all_projects']) == 0:
@@ -89,8 +90,8 @@ def edit(pid):
         }
         print('\n\n------<>{}'.format(up_req))
         print('REQUEST TO SAVE EDITED >>{}'.format(
-            requests.patch('http://127.0.0.1:5000/api/project', json.dumps(up_req)).text))
-        data = json.loads(requests.patch('http://127.0.0.1:5000/api/project', json.dumps(up_req)).text)
+            requests.patch(f'{host_address}/project', json.dumps(up_req)).text))
+        data = json.loads(requests.patch(f'{host_address}/project', json.dumps(up_req)).text)
         print('{} response '.format(data))
         if (data['status']):
             return redirect(url_for('project.index'))
@@ -101,8 +102,8 @@ def edit(pid):
 @login_required
 def project_view():
     req = {'pid': request.args.get('pid'), 'uid': session['uid']}
-    res = json.loads(requests.post('http://127.0.0.1:5000/api/project/view', json.dumps(req)).text)
-    users = json.loads(requests.post('http://127.0.0.1:5000/api/project/users', json.dumps(req)).text)
+    res = json.loads(requests.post(f'{host_address}/project/view', json.dumps(req)).text)
+    users = json.loads(requests.post(f'{host_address}/project/users', json.dumps(req)).text)
     print('RESPONSE : {}'.format(str(res)))
     if len(res['all_projects']) == 0:
         return render_template('project_view.html', data='NO')
@@ -115,7 +116,7 @@ def project_view():
 @login_required
 def delete():
     req = {'pid': request.args.get('pid'), 'uid': session['uid']}
-    res = json.loads(requests.post('http://127.0.0.1:5000/api/project/delete', json.dumps(req)).text)
+    res = json.loads(requests.post(f'{host_address}/project/delete', json.dumps(req)).text)
     print('RESPONSE : {}'.format(str(res)))
     if res['status']:
         return redirect(url_for('project.index'))
@@ -128,7 +129,7 @@ def share(project_id):
     form = share_project_form()
     if request.method == 'POST':
         req = {'pid': project_id, 'uid': session['uid'], 'mail_id': str(form.mail_id.data)}
-        res = json.loads(requests.post('http://127.0.0.1:5000/api/project/share', json.dumps(req)).text)
+        res = json.loads(requests.post(f'{host_address}/project/share', json.dumps(req)).text)
         print(str(res))
         if res['status']:
             flash('Project Shared Successfully!')

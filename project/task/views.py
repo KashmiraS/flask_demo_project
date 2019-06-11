@@ -1,5 +1,6 @@
 from project.task.forms import create_task_form
 import requests
+from project import host_address
 from flask import Blueprint, render_template,request,session,redirect,url_for
 import json
 from flask_login import login_required
@@ -11,7 +12,7 @@ task_view = Blueprint('task', __name__, template_folder='templates/task')
 @login_required
 def index(project_id):
     req = {'pid':project_id,'uid':session['uid']}
-    resp = json.loads(requests.post('http://127.0.0.1:5000/api/task/all', json.dumps(req)).text)
+    resp = json.loads(requests.post(f'{host_address}/task/all', json.dumps(req)).text)
     print('>>{}'.format(str(resp)))
     count = dict()
     count['complete'] =0
@@ -35,7 +36,7 @@ def view(list_id, project_id):
     req = {'pid':project_id,'uid':session['uid']}
     tasks = list()
     print('\nREQUEST VIEW TASK-->{}'.format(str(req)))
-    resp = json.loads(requests.post('http://127.0.0.1:5000/api/task/all', json.dumps(req)).text)
+    resp = json.loads(requests.post(f'{host_address}/task/all', json.dumps(req)).text)
     print('\nRESPONSE VIEW TASK-->{}'.format(str(resp)))
     if resp['status']:
         tasks = resp['tasks']
@@ -55,7 +56,7 @@ def create_task(project_id):
         req['uid'] = session['uid']
         req['pid'] = project_id
         print('\nREQUEST CREATE TASK-->{}'.format(str(req)))
-        resp = json.loads(requests.post('http://127.0.0.1:5000/api/task/create',json.dumps(req)).text)
+        resp = json.loads(requests.post(f'{host_address}/task/create',json.dumps(req)).text)
         print('\nRESPONSE CREATE TASK-->{}'.format(str(resp)))
         if resp['status']:
             return redirect(url_for('task.index',project_id=project_id))
@@ -69,7 +70,7 @@ def delete_task(project_id,list_id,tid):
     req['uid'] = session['uid']
     req['pid'] = project_id
     req['tid'] = tid
-    requests.post('http://127.0.0.1:5000/api/task/delete', json.dumps(req))
+    requests.post(f'{host_address}/task/delete', json.dumps(req))
     return redirect(url_for('task.view',list_id=list_id,project_id=project_id))
 
 @login_required
@@ -79,7 +80,7 @@ def mark_complete(project_id,list_id,tid):
     req['uid'] = session['uid']
     req['pid'] = project_id
     req['tid'] = tid
-    requests.post('http://127.0.0.1:5000/api/task/marking', json.dumps(req))
+    requests.post(f'{host_address}/task/marking', json.dumps(req))
     return redirect(url_for('task.view',list_id=list_id,project_id=project_id))
 
 
@@ -90,5 +91,5 @@ def mark_un_complete(project_id,list_id,tid):
     req['uid'] = session['uid']
     req['pid'] = project_id
     req['tid'] = tid
-    requests.patch('http://127.0.0.1:5000/api/task/marking', json.dumps(req))
+    requests.patch(f'{host_address}/task/marking', json.dumps(req))
     return redirect(url_for('task.view',list_id=list_id,project_id=project_id))
