@@ -4,8 +4,11 @@ This is just for learning purpose
 
 # Keep update requirements.txt
 > This will help to create requirement.txt from virtual enviroment
-
-`$ pip freeze > requirements.txt`
+ You can install it
+`$ pip install pipreqs`
+ and use it as given
+`$ pipreqs project`
+> [Why not pip freeze?](https://github.com/bndr/pipreqs#why-not-pip-freeze)
 
 # Create Virtual environment
 1. `$ pip install virtualenv`
