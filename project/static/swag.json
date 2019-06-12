@@ -1,0 +1,326 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Des",
+    "version": "1.0.0",
+    "title": "Swagger Petstore",
+    "contact": {
+      "email": "apiteam@swagger.io"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:5000/api",
+      "description": "Dev Server"
+    }
+  ],
+  "paths": {
+    "/api/login/{email_}/{password}": {
+      "get": {
+        "description": "login api",
+        "parameters": [
+          {
+            "name": "email_",
+            "in": "path",
+            "description": "login user",
+            "schema": {
+              "type": "string",
+              "minimum": 2,
+              "example": "bagwan.akib@gmail.com"
+            }
+          },
+          {
+            "name": "password",
+            "in": "path",
+            "description": "login passward",
+            "schema": {
+              "type": "string",
+              "minimum": 2,
+              "example": 123
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success loging",
+            "content": {
+              "application/json": {
+                "schema": null,
+                "type": "array",
+                "items": {
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/user_check/{email_}": {
+      "get": {
+        "description": "login api",
+        "parameters": [
+          {
+            "name": "email_",
+            "in": "path",
+            "description": "login user",
+            "schema": {
+              "type": "string",
+              "minimum": 2,
+              "example": "bagwan.akib@gmail.com"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success loging",
+            "content": {
+              "application/json": {
+                "schema": null,
+                "type": "array",
+                "items": {
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/register/{username}/{email_}/{password}": {
+      "get": {
+        "description": "login api",
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "description": "login user",
+            "schema": {
+              "type": "string",
+              "minimum": 2,
+              "example": "akib"
+            }
+          },
+          {
+            "name": "email_",
+            "in": "path",
+            "description": "login user",
+            "schema": {
+              "type": "string",
+              "minimum": 2,
+              "example": "bagwan.akib@gmail.com"
+            }
+          },
+          {
+            "name": "password",
+            "in": "path",
+            "description": "login user",
+            "schema": {
+              "type": "string",
+              "minimum": 2,
+              "example": 234
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success loging",
+            "content": {
+              "application/json": {
+                "schema": null,
+                "type": "array",
+                "items": {
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/project/all/{user_id}": {
+      "get": {
+        "description": "login api",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "login user",
+            "schema": {
+              "type": "integer",
+              "minimum": 2,
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success loging",
+            "content": {
+              "application/json": {
+                "schema": null,
+                "type": "array",
+                "items": {
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/project": {
+      "post": {
+        "description": "Create project",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "project_name",
+            "in": "body",
+            "description": "login user",
+            "schema": {
+              "type": "string",
+              "minimum": 2,
+              "example": 1
+            }
+          },
+          {
+            "name": "project_description",
+            "in": "body",
+            "description": "login user",
+            "schema": {
+              "type": "string",
+              "minimum": 2,
+              "example": 1
+            }
+          },
+          {
+            "name": "project_starting_date",
+            "in": "body",
+            "description": "login user",
+            "schema": {
+              "type": "string",
+              "minimum": 2,
+              "example": 1
+            }
+          },
+          {
+            "name": "project_releasing",
+            "in": "body",
+            "description": "login user",
+            "schema": {
+              "type": "string",
+              "minimum": 2,
+              "example": 1
+            }
+          },
+          {
+            "name": "customer_name",
+            "in": "body",
+            "description": "login user",
+            "schema": {
+              "type": "string",
+              "minimum": 2,
+              "example": 1
+            }
+          },
+          {
+            "name": "customer_contact",
+            "in": "body",
+            "description": "login user",
+            "schema": {
+              "type": "string",
+              "minimum": 2,
+              "example": 1
+            }
+          },
+          {
+            "name": "customer_mail",
+            "in": "body",
+            "description": "login user",
+            "schema": {
+              "type": "string",
+              "minimum": 2,
+              "example": 1
+            }
+          },
+          {
+            "name": "customer_company_name",
+            "in": "body",
+            "description": "login user",
+            "schema": {
+              "type": "string",
+              "minimum": 2,
+              "example": 1
+            }
+          },
+          {
+            "name": "customer_site",
+            "in": "body",
+            "description": "login user",
+            "schema": {
+              "type": "string",
+              "minimum": 2,
+              "example": 1
+            }
+          },
+          {
+            "name": "uid",
+            "in": "body",
+            "description": "login user",
+            "schema": {
+              "type": "integer",
+              "minimum": 2,
+              "example": 1
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success loging",
+            "content": {
+              "application/json": {
+                "schema": null,
+                "type": "array",
+                "items": {
+                  "properties": {
+                    "status": {
+                      "type": "boolean",
+                      "example": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

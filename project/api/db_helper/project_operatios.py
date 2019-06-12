@@ -12,6 +12,7 @@ class project_crud(Resource):
         val = {}
         status = True
         try:
+
             object_ = json.loads(request.data)
             print('==>REQUEST PROJECT:{}'.format(json.dumps(object_)))
             project_obj = project(object_)

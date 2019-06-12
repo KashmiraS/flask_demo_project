@@ -39,19 +39,17 @@
                                       {{form.re_enter_pass(class_='form-control',placeholder="Re-Enter Password")}}
                                   </div>
                                 <center>
+                                  <div class="alert-danger" role="alert">
                                     {%if Error_ == 'PASSWORD_NOT_MATCH'%}
-                                  <div class="alert-danger" role="alert">
                                       <span>Password not matched!</span>
-                                  </div>
                                     {%elif Error_ == 'VALUES_ERROR'%}
-                                  <div class="alert-danger" role="alert">
                                       <span>Can't possess your request please check your inputs</span>
-                                  </div>
                                     {%elif Error_ == 'EXIST'%}
-                                  <div class="alert-danger" role="alert">
                                       <span>User already Exist with '{{form.email.data}}'</span>
-                                  </div>
                                     {%endif%}
+                                  </div>
+
+
                                 </center>
                           </div>
                           <div class="card-footer">

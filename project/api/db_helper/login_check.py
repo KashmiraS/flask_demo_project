@@ -6,15 +6,20 @@ from flask import json
 class login_helper(Resource):
     def get(self, email_, password):
         print("LOGIN REQUEST :{} ".format(email_))
-        id = 0
-        re = Users.query.filter(Users.email == email_, Users.password_text == password).first().__dict__
-        print(re['uid'])
-        res = {'status': bool(re),
-               'user_id':re['uid'],
-                 'username': re['username']
-               }
-        print(str(res))
-        return res
+        try:
+            re = Users.query.filter(Users.email == email_, Users.password_text == password).first().__dict__
+            print(re['uid'])
+            res = {'status': bool(re),
+                   'user_id':re['uid'],
+                     'username': re['username']
+                   }
+            print(str(res))
+            return res
+        except Exception as e:
+            return {
+                'status':False,
+                'error':str(e)
+            }
 
     def post(self, name):
         print("POST ====>" + name)

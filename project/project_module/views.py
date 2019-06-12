@@ -6,10 +6,12 @@ from project.project_module.forms import add_project, share_project_form
 from project.project_module.models import project_wapper
 from project.utils.statics_data import must_in_result, date_in_result, not_in_result
 from project.utils.conversions import todate_time, to_date, with_utf
+from project.request_module.apicalls import project_api
 import datetime
 
 project_print = Blueprint('project', __name__, template_folder='templates/project_module')
 
+api = project_api()
 
 @project_print.route('/')
 @login_required
@@ -17,7 +19,7 @@ def index():
     uid_send = dict()
     uid_send["uid"] = session['uid']
     print(json.dumps(uid_send))
-    data = json.loads(requests.get('{}/project/all/{}'.format(host_address,session['uid'])).text)
+    data = api.get_all(session['uid']) #json.loads(requests.get('{}/project/all/{}'.format(host_address,session['uid'])).text)
     var = list()
     try:
         var = data['all_projects']
@@ -47,7 +49,7 @@ def new_project():
         project_obj = project_wapper(project_)
         # res = Response(json.dumps(data), status=200, mimetype='application/json')
         print('==>>REQUEST : {}'.format(str(project_obj.__dict__)))
-        data = json.loads(requests.post(f'{host_address}/project', json.dumps(project_obj.__dict__)).text)
+        data = api.create(json.dumps(project_obj.__dict__))#json.loads(requests.post(f'{host_address}/project', json.dumps(project_obj.__dict__)).text)
         print('{} response '.format(data))
         if (data['status']):
             return redirect(url_for('project.index'))
@@ -59,7 +61,7 @@ def new_project():
 def edit(pid):
     form = add_project()
     req = {'pid': pid, 'uid': session['uid']}
-    res = json.loads(requests.post(f'{host_address}/project/view', json.dumps(req)).text)
+    res = api.view(req)#json.loads(requests.post(f'{host_address}/project/view', json.dumps(req)).text)
     print('RESPONSE : {}'.format(str(res)))
     data = res['all_projects'][0]
     if len(res['all_projects']) == 0:
@@ -89,9 +91,9 @@ def edit(pid):
             'project': project_obj.__dict__
         }
         print('\n\n------<>{}'.format(up_req))
-        print('REQUEST TO SAVE EDITED >>{}'.format(
-            requests.patch(f'{host_address}/project', json.dumps(up_req)).text))
-        data = json.loads(requests.patch(f'{host_address}/project', json.dumps(up_req)).text)
+        # print('REQUEST TO SAVE EDITED >>{}'.format(
+        #     requests.patch(f'{host_address}/project', json.dumps(up_req)).text))
+        data = api.save_edited(json.dumps(up_req))#json.loads(requests.patch(f'{host_address}/project', json.dumps(up_req)).text)
         print('{} response '.format(data))
         if (data['status']):
             return redirect(url_for('project.index'))
@@ -102,8 +104,8 @@ def edit(pid):
 @login_required
 def project_view():
     req = {'pid': request.args.get('pid'), 'uid': session['uid']}
-    res = json.loads(requests.post(f'{host_address}/project/view', json.dumps(req)).text)
-    users = json.loads(requests.post(f'{host_address}/project/users', json.dumps(req)).text)
+    res = api.view(req)#json.loads(requests.post(f'{host_address}/project/view', json.dumps(req)).text)
+    users = api.get_project_users(req)#json.loads(requests.post(f'{host_address}/project/users', json.dumps(req)).text)
     print('RESPONSE : {}'.format(str(res)))
     if len(res['all_projects']) == 0:
         return render_template('project_view.html', data='NO')
@@ -116,7 +118,7 @@ def project_view():
 @login_required
 def delete():
     req = {'pid': request.args.get('pid'), 'uid': session['uid']}
-    res = json.loads(requests.post(f'{host_address}/project/delete', json.dumps(req)).text)
+    res = api.delete(req)#json.loads(requests.post(f'{host_address}/project/delete', json.dumps(req)).text)
     print('RESPONSE : {}'.format(str(res)))
     if res['status']:
         return redirect(url_for('project.index'))
@@ -129,7 +131,7 @@ def share(project_id):
     form = share_project_form()
     if request.method == 'POST':
         req = {'pid': project_id, 'uid': session['uid'], 'mail_id': str(form.mail_id.data)}
-        res = json.loads(requests.post(f'{host_address}/project/share', json.dumps(req)).text)
+        res = api.share(req)#json.loads(requests.post(f'{host_address}/project/share', json.dumps(req)).text)
         print(str(res))
         if res['status']:
             flash('Project Shared Successfully!')

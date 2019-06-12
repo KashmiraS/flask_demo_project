@@ -5,8 +5,10 @@ import json
 import flask_login
 from project.users.froms import user_registration, user_login
 from project.users.models import Users
+from project.request_module.apicalls import user_api
 
 user_print = Blueprint('users', __name__, template_folder='templates/users')
+api = user_api()
 
 
 @user_print.route('/')
@@ -17,7 +19,7 @@ def index():
 
 @user_print.route('/signup', methods=['GET', 'POST'])
 def registration():
-    form = user_registration()
+    form = user_registration(request.form)
     flask_login.logout_user()
     Error_ = ""
     if request.method == 'POST':
@@ -27,9 +29,9 @@ def registration():
             try:
                 username = form.username.data
                 email = form.email.data
-                present = (json.loads((requests.get('{}/user_check/{}'.format(host_address,email))).text))['status']
+                present = api.check_mail(email) #(json.loads((requests.get('{}/user_check/{}'.format(host_address,email))).text))['status']
                 if not present:
-                    res=(json.loads((requests.post('{}/register/{}/{}/{}'.format(host_address,username, email, password))).text))['status']
+                    res=api.register(username, email, password) #(json.loads((requests.post('{}/register/{}/{}/{}'.format(host_address,username, email, password))).text))['status']
                     if res:
                         return redirect(url_for('users.login'))
                 Error_ = 'EXIST'
@@ -55,7 +57,7 @@ def login():
                 return render_template('login.html', form=form, Error_='NO_INPUT')
             else:
                 print('here input' + email_)
-                res =json.loads((requests.get('{}/login/{}/{}'.format(host_address,email_, password))).text)
+                res = api.login(email_, password)#json.loads((requests.get('{}/login/{}/{}'.format(host_address,email_, password))).text)
                 present = res['status']
                 if present:
                     session['uid'] = res['user_id']
