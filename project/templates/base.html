@@ -45,11 +45,14 @@
           </a>
         </div>
     {%else%}
+    {% set ur=request.path%}
+    {%if not ur=='/users/signin'%}
      <div class="form-inline my-2 my-lg-0">
           <a href="{{url_for('users.login')}}">
             <button class="btn btn-outline-success my-2 my-sm-0">Sign in</button>
           </a>
         </div>
+    {%endif%}
       {%endif%}
   </div>
 </nav>

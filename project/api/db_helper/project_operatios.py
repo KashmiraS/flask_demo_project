@@ -32,25 +32,32 @@ class project_crud(Resource):
             print('Error:"{}" ,"status":{}'.format(str(e),status))
         return jsonify(val)
     def patch(self):
-        print('IN SERVER :{}'.format(str(json.loads(request.data))))
-        object_ = json.loads(request.data)
-        print('==>REQUEST PROJECT:{}'.format(str(object_)))
-        var = object_['user']
-        project_ = object_['project']
         try:
-            if (project_['project_starting_date']==None) or (project_['project_starting_date']=='None'):
-                project_.pop('project_starting_date')
-            if (project_['project_releasing']==None) or (project_['project_releasing']=='None'):
-                project_.pop('project_releasing')
-        except KeyError:
-            pass
-        print('==>CHECK LAST:{}'.format(str(project_)))
-        project.query.get(var['pid']).update(project_)
-        print("updateing..")
-        db.session.commit()
-        return {
+            print('IN SERVER :{}'.format(str(json.loads(request.data))))
+            object_ = json.loads(request.data)
+            print('==>REQUEST PROJECT:{}'.format(str(object_)))
+            var = object_['user']
+            project_ = object_['project']
+            try:
+                if (project_['project_starting_date']==None) or (project_['project_starting_date']=='None'):
+                    project_.pop('project_starting_date')
+                if (project_['project_releasing']==None) or (project_['project_releasing']=='None'):
+                    project_.pop('project_releasing')
+            except KeyError:
+                pass
+            print('==>CHECK LAST:{}'.format(str(project_)))
+            project.query.get(var['pid']).update(project_)
+            print("updateing..")
+            db.session.commit()
+            return {
                 'status': True
             }
+        except Exception as e:
+            return {
+                    'status': True,
+                    'error' : str(e)
+                }
+
 
 class get_project_all(Resource):
     def get(self, id):
@@ -80,6 +87,7 @@ class get_project(Resource):
             for x in date_in_result:
                 d[x]=str(d[x])
             data.append(d)
+        print('\nSingle Project:')
         print({'all_projects': data})
         return {'all_projects': data}
 
@@ -90,17 +98,20 @@ class delete_project(Resource):
         dataDict = json.loads(data)
         print(dataDict)
         try:
-
-            try:
-                status = project.query.get(dataDict['pid'])
-                status.share.clear()
-            except Exception as e:
-                print(f'Error {e} ')
-            status = project.query.filter(
-                db.and_(project.uid == dataDict['uid'], project.pid == dataDict['pid'])).delete()
-            status = task_of_project.query.filter(task_of_project.pid == dataDict['pid']).delete()
-            db.session.commit()
-            status = True
+            pro = project.query.get(dataDict['pid'])
+            if pro.pid:
+                try:
+                    status = project.query.get(dataDict['pid'])
+                    status.share.clear()
+                except Exception as e:
+                    print(f'Error {e} ')
+                status = project.query.filter(
+                    db.and_(project.uid == dataDict['uid'], project.pid == dataDict['pid'])).delete()
+                status = task_of_project.query.filter(task_of_project.pid == dataDict['pid']).delete()
+                db.session.commit()
+                status = True
+            else:
+                status = False
         except Exception as e:
             print(str(e))
         print({'status': status})
@@ -139,6 +150,7 @@ class all_project_users(Resource):
                 d.pop('_sa_instance_state')
                 d.pop('password_text')
                 users.append(d)
+            status = True
             data ={'status': status,
                     'users':json.loads(json.dumps(users))}
             print('\n\nusers {}:{}'.format(dataDict['uid'],data))

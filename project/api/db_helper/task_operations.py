@@ -39,14 +39,17 @@ class get_task(Resource):
             return {'status': False, 'error':str(e)}
 class delete_task(Resource):
     def post(self):
+        status =False
         try:
             object_ = json.loads(request.data)
             print('TASK SERVER-->{}'.format(object_))
+            obj = task_of_project.query.get(object_['tid'])
+            status = (obj.tid==object_['tid'])
             task_of_project.query.filter(task_of_project.tid==object_['tid']).delete()
             db.session.commit()
-            return {'status': True}
         except Exception as e:
-            return {'status': False, 'error':str(e)}
+           pass
+        return {'status': status}
 class markings(Resource):
     def post(self):
         try:
@@ -55,7 +58,7 @@ class markings(Resource):
             task = task_of_project.query.get(object_['tid'])
             task.state =1
             db.session.commit()
-            return {'status': True ,'task':task}
+            return {'status': True }
         except Exception as e:
             return {'status': False, 'error':str(e)}
 
@@ -66,6 +69,6 @@ class markings(Resource):
             task = task_of_project.query.get(object_['tid'])
             task.state = 0
             db.session.commit()
-            return {'status': True ,'task':task}
+            return {'status': True }
         except Exception as e:
             return {'status': False, 'error':str(e)}

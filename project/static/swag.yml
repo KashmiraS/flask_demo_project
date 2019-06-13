@@ -1,11 +1,11 @@
 ---
 swagger: '2.0'
 info:
-  description: Des
+  description: This system is for Learning.
   version: 1.0.0
-  title: Swagger Petstore
+  title: Project Management System
   contact:
-    email: apiteam@swagger.io
+    email: bagwan.akib@nitorinfotech.com
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
@@ -17,18 +17,18 @@ paths:
     get:
       tags:
         - User
-      description: login api
+      description: This api will help to login user
       parameters:
       - name: email_
         in: path
-        description: login user
+        description: user must enter registerd mail id for login
         schema:
           type: string
           minimum: 2
           example: bagwan.akib@gmail.com
       - name: password
         in: path
-        description: login passward
+        description: user must enter same password for the login
         schema:
           type: string
           minimum: 2
@@ -38,33 +38,33 @@ paths:
           description: success loging
           content:
             application/json:
-              schema: 
+              schema:
               type: array
               items:
                 properties:
                   status:
                     type: boolean
                     example: true
-                    
+
   "/api/user_check/{email_}":
     get:
       tags:
         - User
-      description: login api
+      description: If user is registerd so we can get true result form this url and this url will help to check the mail id is exist or not
       parameters:
       - name: email_
         in: path
-        description: login user
+        description: registerd or not registerd mail id
         schema:
           type: string
           minimum: 2
           example: bagwan.akib@gmail.com
       responses:
         '200':
-          description: success loging
+          description: True will gives the registed mail and false will indicate the user is not registerd
           content:
             application/json:
-              schema: 
+              schema:
               type: array
               items:
                 properties:
@@ -75,35 +75,35 @@ paths:
     get:
       tags:
         - User
-      description: login api
+      description: user registration link
       parameters:
       - name: username
         in: path
-        description: login user
+        description: new user's user name
         schema:
           type: string
           minimum: 2
           example: akib
       - name: email_
         in: path
-        description: login user
+        description: email must be not registerd with the system
         schema:
           type: string
           minimum: 2
           example: bagwan.akib@gmail.com
       - name: password
         in: path
-        description: login user
+        description: password is user friendly
         schema:
           type: string
           minimum: 2
           example: 234
       responses:
         '200':
-          description: success loging
+          description: True will endicte use is registerd and false will indicate user is not registerd
           content:
             application/json:
-              schema: 
+              schema:
               type: array
               items:
                 properties:
@@ -114,21 +114,21 @@ paths:
     get:
       tags:
         - Project
-      description: login api
+      description: this link will return the users all project on system
       parameters:
       - name: user_id
         in: path
-        description: login user
+        description: to retrive all project on the system system needs user id for retrive it
         schema:
           type: integer
           minimum: 2
           example: 1
       responses:
         '200':
-          description: success loging
+          description: this will give json of all projects
           content:
             application/json:
-              schema: 
+              schema:
               type: array
               items:
                 properties:
@@ -140,19 +140,451 @@ paths:
     post:
       tags:
         - Project
-      description: Create project
+      description: This link will help to create project on system
       consumes:
         - application/json
       parameters:
       - name: project
         in: body
-        description: login user
+        description: Body must me in json object
+        schema:
+          type: "object"
+          properties:
+            customer_company_name:
+              type: "string"
+              example: nitor
+            customer_contact:
+              type: string
+              example: '9090909090'
+            customer_mail:
+                type: string
+                example:  mail@mail.com
+            customer_name:
+                type: string
+                example:  Customer Name
+            customer_site:
+                type: string
+                example:  http://www.a.co m
+            project_description:
+                type: string
+                example:  Some description
+            project_name:
+                type: string
+                example:  Project Name
+            project_releasing:
+                type: string
+                example:  Sun, 30 Jun 2019 00:00:00 GMT
+            project_starting_date:
+                type: string
+                example:  Sun, 16 Jun 2019 00:00:00 GMT
+            uid:
+                type: integer
+                example:  1
+      responses:
+        '200':
+          description: status will true if the data is saved and false when some error or some fields are not matching
+          content:
+            application/json:
+              schema:
+              type: array
+              items:
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+  "/api/project/":
+    patch:
+      tags:
+        - Project
+      description: This link will help to update the project details
+      consumes:
+        - application/json
+      parameters:
+      - name: project
+        in: body
+        description: to get update object must need the project id and project object so system can understand which project should update
+        schema:
+          type: "object"
+          properties:
+            users:
+              type: object
+              properties:
+                pid:
+                  type: integer
+                  example: 8
+                uid:
+                  type: integer
+                  example: 1
+            project:
+              type: object
+              properties:
+                customer_company_name:
+                  type: string
+                  example: DEMO_COMP
+                customer_contact:
+                  type: string
+                  example: '9090909090'
+                customer_mail:
+                  type: string
+                  example: mail@mail.com
+                customer_name:
+                  type: string
+                  example: 'Customer Name'
+                customer_site:
+                  type: string
+                  example: 'http:// www.a.com'
+                project_description:
+                  type: string
+                  example: 'Some description'
+                project_name:
+                  type: string
+                  example: 'Project Name edited'
+                project_releasing:
+                  type: string
+                  example: 'Sun, 30 Jun 2019 00:00:00 GMT'
+                project_starting_date:
+                  type: string
+                  example: 'Sun, 23 Jun 201 9 00:00:00 GMT'
+                uid:
+                  type: integer
+                  example: 1
+      responses:
+        '200':
+          description: this link will return true or false as result
+          content:
+            application/json:
+              schema:
+              type: array
+              items:
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+
+  "/api/project/view":
+    post:
+      tags:
+        - Project
+      description: to view single project we can use this link
+      consumes:
+        - application/json
+      parameters:
+      - name: project
+        in: body
+        type: string
+        description: body must contain with project id and the user id
+        schema:
+          type: "object"
+          properties:
+              pid:
+                type: integer
+                example: 8
+              uid:
+                type: integer
+                example: 1
+      responses:
+        '200':
+          description: This will return the associated project details else empty json array in a all_project
+          content:
+            application/json:
+              schema:
+              type: array
+              items:
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+
+  "/api/project/delete":
+    post:
+      tags:
+        - Project
+      description: To delete project we can use this link
+      consumes:
+        - application/json
+      parameters:
+      - name: project
+        in: body
+        type: string
+        description: To delete project link must need the user associated to project and project id
+        schema:
+          type: "object"
+          properties:
+              pid:
+                type: integer
+                example: 8
+              uid:
+                type: integer
+                example: 1
+      responses:
+        '200':
+          description: this link will return the project is deleted or not in the True and False
+          content:
+            application/json:
+              schema:
+              type: array
+              items:
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+
+  "/api/project/share":
+    post:
+      tags:
+        - Project
+      description: Share project to othe users through the mail id
+      consumes:
+        - application/json
+      parameters:
+      - name: project
+        in: body
+        type: string
+        description: to share the project with other users in body need an mail id of the other user and project id as well as user id of the project owner
+        schema:
+          type: "object"
+          properties:
+              pid:
+                type: integer
+                example: 7
+              uid:
+                type: integer
+                example: 2
+              mail_id:
+                type: string
+                example: onkar@gmail.com
+      responses:
+        '200':
+          description: This link will return status true and false
+          content:
+            application/json:
+              schema:
+              type: array
+              items:
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+
+  "/api/project/users":
+    post:
+      tags:
+        - Project
+      description: get all associated users of the project
+      consumes:
+        - application/json
+      parameters:
+      - name: project
+        in: body
+        type: string
+        description: to get all users of project we need user id and the project id to find all users of the project
+        schema:
+          type: "object"
+          properties:
+              pid:
+                type: integer
+                example: 7
+              uid:
+                type: integer
+                example: 2
+      responses:
+        '200':
+          description: This link wll return the array of all users
+          content:
+            application/json:
+              schema:
+              type: array
+              items:
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+
+  "/api/task/create":
+    post:
+      tags:
+        - Task
+      description: Create task inside the project
+      consumes:
+        - application/json
+      parameters:
+      - name: project
+        in: body
+        type: string
+        description: to create task there is need of taks object including all this field
+        schema:
+          type: "object"
+          properties:
+              title:
+                type: string
+                example: DEMO
+              details:
+                type: string
+                example: 'SOME TEXT'
+              start_date:
+                type: string
+                example: '2019-06-15'
+              end_date:
+                type: string
+                example: '2019-06-26'
+              uid:
+                type: integer
+                example: 1
+              pid:
+                type: integer
+                example: 7
+
+      responses:
+        '200':
+          description: This ill return true or false as a return
+          content:
+            application/json:
+              schema:
+              type: array
+              items:
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+
+  "/api/task/all":
+    post:
+      tags:
+        - Task
+      description: Get all associated task of project with this link
+      consumes:
+        - application/json
+      parameters:
+      - name: project
+        in: body
+        type: string
+        description: to get associated task we need the project id and the user id to get access them
+        schema:
+          type: "object"
+          properties:
+              uid:
+                type: integer
+                example: 1
+              pid:
+                type: integer
+                example: 7
+
       responses:
         '200':
           description: success loging
           content:
             application/json:
-              schema: 
+              schema:
+              type: array
+              items:
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+
+  "/api/task/delete":
+    post:
+      tags:
+        - Task
+      description: we can delete the task with this link
+      consumes:
+        - application/json
+      parameters:
+      - name: project
+        in: body
+        type: string
+        description: To perform deletion operation we can use the task id
+        schema:
+          type: "object"
+          properties:
+              uid:
+                type: integer
+                example: 1
+              pid:
+                type: integer
+                example: 7
+              tid:
+                type: integer
+                example: 1
+
+      responses:
+        '200':
+          description: for success this will return true and if get false it means task is not deleted
+          content:
+            application/json:
+              schema:
+              type: array
+              items:
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+  "/api/task/marking":
+    post:
+      tags:
+        - Task
+      description: To mark complete the task we can use this link
+      consumes:
+        - application/json
+      parameters:
+      - name: project
+        in: body
+        type: string
+        description: request body must contain the task id to perform the operation
+        schema:
+          type: "object"
+          properties:
+              uid:
+                type: integer
+                example: 1
+              pid:
+                type: integer
+                example: 7
+              tid:
+                type: integer
+                example: 1
+
+      responses:
+        '200':
+          description: This will return the true if task is present and the change is done else false
+          content:
+            application/json:
+              schema:
+              type: array
+              items:
+                properties:
+                  status:
+                    type: boolean
+    patch:
+      tags:
+        - Task
+      description: To mark as working we can use this link
+      consumes:
+        - application/json
+      parameters:
+      - name: project
+        in: body
+        type: string
+        description: this body must contain the task id to perform the operation
+        schema:
+          type: "object"
+          properties:
+              uid:
+                type: integer
+                example: 1
+              pid:
+                type: integer
+                example: 7
+              tid:
+                type: integer
+                example: 1
+
+      responses:
+        '200':
+          description: This will return the true if task is present and the change is done other wise false
+          content:
+            application/json:
+              schema:
               type: array
               items:
                 properties:
