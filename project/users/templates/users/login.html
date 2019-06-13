@@ -35,17 +35,17 @@
                               </div>
                           </div>
                           <center>
-                              {%if Error_ == 'KEY_ERROR'%}
+                              {%if Error_ == 2 or Error_==1%}
                                   <div class="alert-danger" role="alert">
                                       <span>Please enter valid user name & password</span>
                                   </div>
-                              {%elif Error_ == 'ERROR_ON_USER_KEY'%}
+                              {%elif Error_ == 3%}
                                   <div class="alert-danger" role="alert">
                                       <span>Please enter registered username & password</span>
                                   </div>
-                              {%elif Error_ == 'NO_INPUT'%}
-                                  <div class="alert-danger" role="alert">
-                                      <span>Please enter username & password</span>
+                              {%else%}
+                                  <div class="alert-success" role="alert">
+                                      <span>Welcome</span>
                                   </div>
                               {%endif%}
                           </center>

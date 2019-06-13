@@ -56,7 +56,7 @@ def login():
             email_ = form.email.data
             password = form.password.data
             if len(email_) == 0 and len(password) == 0:
-                return render_template('login.html', form=form, Error_='NO_INPUT')
+                return render_template('login.html', form=form, Error_=3)#no input
             else:
                 print('here input' + email_)
                 res = api.login(email_, password)#json.loads((requests.get('{}/login/{}/{}'.format(host_address,email_, password))).text)
@@ -69,9 +69,10 @@ def login():
                     print(flask_login.current_user.is_authenticated)
                     flask_login.login_user(user)
                     return redirect(url_for('users.index'))
-                Error_ = False
+                Error_ = 1 # not valid
+                return render_template('login.html', form=form, Error_=Error_)
         except KeyError:
-            Error_ = 'ERROR_ON_USER_KEY'
+            Error_ = 2 # 'ERROR_ON_USER_KEY'
         except Exception as e:
             Error_ = 'ok'+str(e)
     print(Error_)
@@ -95,9 +96,9 @@ def forget_password():
         res = api.send_forget_pass(json.dumps(req))#json.loads(requests.post(f'{host_address}/project/share', json.dumps(req)).text)
         print(str(res))
         if res['status']:
-            flash('Project Shared Successfully!')
+            flash('Link Shared Successfully!')
         else:
-            flash('Project Not Shared!')
+            flash('Can\'t reach to your mail. Link is not Shared!')
     return render_template('forget_password.html',form=form)
 
 @user_print.route('/new_password/<string:data>')
