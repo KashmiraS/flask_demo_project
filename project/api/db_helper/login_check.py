@@ -81,14 +81,17 @@ class password_class(Resource):
             data = request.data
             print("CHANGE PASSWORD {}".format(data))
             dataDict = json.loads(data)
-            print(dataDict)
-            #us = Users.query.filter(Users.email == dataDict['mail_id']).first()
-            #us.password_text = str(dataDict['new_password'])
-            #db.session.commit()
+            print(type(dataDict))
+            us = Users.query.filter(Users.email == dataDict['mail_id']).first()
+            us.password_text = str(dataDict['new_password'])
+            user['uid'] =us.uid
+            user['mail_id']  = us.email
+            user['username'] =us.username
+            db.session.commit()
             status = True
         except Exception as e:
             pass
-        return {'status': status, 'user': str(json.loads(user))}
+        return {'status': status, 'user': str(user)}
 
 
 class register(Resource):

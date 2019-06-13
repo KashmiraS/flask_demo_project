@@ -69,7 +69,7 @@ def login():
                     print(flask_login.current_user.is_authenticated)
                     flask_login.login_user(user)
                     return redirect(url_for('users.index'))
-                Error_ = 'KEY_ERROR'
+                Error_ = False
         except KeyError:
             Error_ = 'ERROR_ON_USER_KEY'
         except Exception as e:
@@ -112,9 +112,23 @@ def change(data):
     data = json.loads(data)['user']
     print(data['username'])
     req=dict()
+    status = False
+    ERROR =""
     if request.method=='POST':
-        req['mail_id'] =data['email']
-        req['new_password'] =form.re_enter.data
-        res = api.send_changed_pass(json.dumps(req))
-        print(res)
-    return render_template('new_password.html',form=form,data=data)
+        new_pass1 = form.pass1.data
+        new_pass2 = form.re_enter.data
+        if len(new_pass1)>0 and len(new_pass2)>0:
+            if new_pass1==new_pass2:
+                req['mail_id'] =data['email']
+                req['new_password'] =form.re_enter.data
+                res = api.send_changed_pass(json.dumps(req))
+                print(res)
+                if(res['status']):
+                    status = True
+                else:
+                    flash("Can't process your request.")
+            else:
+                flash("Password not matched.")
+        else:
+            flash("Please enter New password.")
+    return render_template('new_password.html',form=form,data=data,status=status)
