@@ -1,9 +1,11 @@
 Flask_Login==0.4.1
-requests==2.18.4
-WTForms==2.1
-Flask_SQLAlchemy==2.3.2
-Flask_Migrate==2.1.1
-SQLAlchemy==1.2.6
 Flask_RESTful==0.3.7
-Flask_WTF==0.14.2
 Flask==1.0.2
+request==2019.4.13
+SQLAlchemy==1.2.6
+requests==2.18.4
+Flask_SQLAlchemy==2.3.2
+Flask_WTF==0.14.2
+Flask_Migrate==2.1.1
+WTForms==2.1
+flasgger==0.9.2

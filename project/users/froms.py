@@ -12,3 +12,11 @@ class user_login(FlaskForm):
     email = StringField('Email')
     password = PasswordField('Password')
     submit = SubmitField('Sign in')
+
+class forget_password_form(FlaskForm):
+    mail_id =StringField('Please use registered mail id')
+    submit = SubmitField('send link to forget password')
+class new_password(FlaskForm):
+    pass1 =PasswordField('New Password')
+    re_enter =PasswordField('New Password')
+    submit = SubmitField('save')

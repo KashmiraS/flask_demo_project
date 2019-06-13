@@ -1,3 +1,4 @@
+from project.mailer_module.mailer_class import send_mail
 from project.project_module.models import project,project_wapper
 from project.users.models import Users
 from flask_restful import Resource
@@ -6,6 +7,7 @@ from flask import request,jsonify,json
 from project.utils.statics_data import date_in_result
 from project.utils.conversions import todate_time
 from project.task.models import task_of_project
+
 
 class project_crud(Resource):
     def post(self):
@@ -129,6 +131,7 @@ class share_project(Resource):
             pro.share.append(us)
             db.session.commit()
             status=True
+            send_mail(f'Shared project:{pro.project_name}','USER',dataDict['mail_id'],f'{us.username} has shared a project with you.') #subject,user_name,mail_id,body
             print({'status': status})
             return {'status': status}
         except Exception as e:

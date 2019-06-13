@@ -13,6 +13,14 @@ class user_api():
     def login(self, email_, password):
         return executer.get_json_wapper_('{}/login/{}/{}'.format(host_address, email_, password))
 
+    def send_forget_pass(self,mail_id):
+        return executer.post_json_wapper('{}/password'.format(host_address),mail_id)
+
+    def send_changed_pass(self,mail_id):
+        return executer.patch_json_wapper_('{}/password'.format(host_address),mail_id)
+    def get_user_by_mail(self,mail):
+        return executer.post_json_wapper('{}/get_user'.format(host_address), mail)
+
 
 class project_api():
     def create(self, project_obj):

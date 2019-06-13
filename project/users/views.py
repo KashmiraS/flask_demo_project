@@ -1,9 +1,11 @@
-from flask import url_for, render_template, Blueprint, request, redirect,session
+import base64
+
+from flask import url_for, render_template, Blueprint, request, redirect, session, flash
 from project import User, db ,host_address
 import requests
 import json
 import flask_login
-from project.users.froms import user_registration, user_login
+from project.users.froms import user_registration, user_login, forget_password_form, new_password
 from project.users.models import Users
 from project.request_module.apicalls import user_api
 
@@ -84,3 +86,35 @@ def logout():
     print('in logout')
     flask_login.logout_user()
     return redirect(url_for('users.login'))
+
+@user_print.route('/forget_password',methods=['GET','POST'])
+def forget_password():
+    form = forget_password_form()
+    if request.method == 'POST':
+        req = {'mail_id': str(form.mail_id.data)}
+        res = api.send_forget_pass(json.dumps(req))#json.loads(requests.post(f'{host_address}/project/share', json.dumps(req)).text)
+        print(str(res))
+        if res['status']:
+            flash('Project Shared Successfully!')
+        else:
+            flash('Project Not Shared!')
+    return render_template('forget_password.html',form=form)
+
+@user_print.route('/new_password/<string:data>')
+def visiter(data):
+    req ={'mail_id':str(data)}
+    res= json.dumps(api.get_user_by_mail(json.dumps(req)))
+    return redirect(url_for('users.change',data=res))
+
+@user_print.route('/new_password_create/<string:data>',methods=['POST','GET'])
+def change(data):
+    form = new_password()
+    data = json.loads(data)['user']
+    print(data['username'])
+    req=dict()
+    if request.method=='POST':
+        req['mail_id'] =data['email']
+        req['new_password'] =form.re_enter.data
+        res = api.send_changed_pass(json.dumps(req))
+        print(res)
+    return render_template('new_password.html',form=form,data=data)
