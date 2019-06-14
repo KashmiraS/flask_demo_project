@@ -21,7 +21,7 @@ To activate the environment go inside the virtual environment `DemoProjectVenv\S
 > Project on localhost: `http://127.0.0.1:5000/`
 > swagger on localhost: `http://127.0.0.1:5000/swagger/`
 # Hosted links
-> Project on localhost: `http://akibdemo.herokuapp.com/`
-> swagger on localhost: `http://akibdemo.herokuapp.com/swagger/`
+> Project on localhost: `http://akibdemo1.herokuapp.com/`
+> swagger on localhost: `http://akibdemo1.herokuapp.com/swagger/`
 
 
