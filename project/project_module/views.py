@@ -37,7 +37,6 @@ def new_project():
         project_['project_description'] = form.project_description.data
         project_['project_starting_date'] = form.project_starting_date.data
         project_['project_releasing'] = form.project_releasing.data
-
         project_['customer_name'] = form.customer_name.data
         project_['customer_contact'] = form.customer_contact.data
         project_['customer_mail'] = form.customer_mail.data

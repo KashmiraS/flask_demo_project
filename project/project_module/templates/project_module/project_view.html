@@ -7,8 +7,8 @@
 </div>
     {%else%}
     <div class="display-3">{{data.project_name}}</div>
-    {%if (data.uid==session['uid'])%}
     <a href="{{url_for('task.index',project_id=data.pid)}}" > <button id="read-more" style="margin:2px" class="btn btn-primary float-md-left">Tasks <i class="fa fa-tasks" aria-hidden="true"></i></button></a>
+    {%if (data.uid==session['uid'])%}
     <a href="{{url_for('project.edit',pid=data.pid)}}" > <button id="read-more" style="margin:2px" class="btn btn-primary float-md-right">Edit <i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>
     <button  data-toggle="modal" data-target="#exampleModal" style="margin:2px" class="btn btn-primary float-md-right">Delete <i class="fa fa-trash" aria-hidden="true"></i></button>
     <a href="{{url_for('project.share',project_id=data.pid)}}" > <button id="read-more" style="margin:2px" class="btn btn-primary float-md-right">Share <i class="fa fa-share" aria-hidden="true"></i></button></a>
