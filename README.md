@@ -16,3 +16,12 @@ This is just for learning purpose
 3. `$ virtualenv DemoProjectVenv`
 
 To activate the environment go inside the virtual environment `DemoProjectVenv\Scripts>activate`
+
+# Localhost links
+> Project on localhost: `http://127.0.0.1:5000/`
+> swagger on localhost: `http://127.0.0.1:5000/swagger/`
+# Hosted links
+> Project on localhost: `http://akibdemo.herokuapp.com/`
+> swagger on localhost: `http://akibdemo.herokuapp.com/swagger/`
+
+
