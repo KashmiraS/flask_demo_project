@@ -1,11 +1,10 @@
-from wtforms import StringField, SubmitField, RadioField, SelectField,TextAreaField,DateField
+from wtforms import StringField, SubmitField, TextAreaField, DateField
 from flask_wtf import FlaskForm
 
 
-class add_project(FlaskForm):
+class AddProject(FlaskForm):
     project_name = StringField('Project Name ')
     project_description = TextAreaField('Enter Descriptions of project in short ')
-    #project_language = StringField('Project Language')
     project_starting_date = DateField('Starting date ', id='start_date')
     project_releasing = DateField('Releasing date ', id='releasing_date')
 
@@ -14,10 +13,11 @@ class add_project(FlaskForm):
     customer_mail = StringField('mail Id ')
     customer_company_name = StringField('Company Name ')
     customer_site = StringField('Company url ')
-    # is software company
+    # is software company future entity
     submit = SubmitField('Create')
     submit_save = SubmitField('Save')
 
-class share_project_form(FlaskForm):
-    mail_id =StringField('Please use registered user id for sharing project')
+
+class ShareProjectForm(FlaskForm):
+    mail_id = StringField('Please use registered user id for sharing project')
     submit = SubmitField('share')

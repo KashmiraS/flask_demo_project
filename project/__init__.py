@@ -32,9 +32,9 @@ Migrate(app, db)
 ##########
 
 from flasgger import Swagger
-from flasgger.utils import swag_from
 from flasgger import LazyString, LazyJSONEncoder
 import request
+
 app.config["SWAGGER"] = {"title": "Swagger-UI", "uiversion": 2}
 
 swagger_config = {
@@ -48,7 +48,6 @@ swagger_config = {
         }
     ],
     "static_url_path": "/flasgger_static",
-    # "static_folder": "static",  # must be set by user
     "swagger_ui": True,
     "specs_route": "/swagger/",
 }
@@ -105,9 +104,7 @@ from project.users.views import user_print
 from project.project_module.views import project_print
 from project.task.views import task_view
 
-# from project.api.db_helper.login_check import login
 
-# app.register_blueprint(api, url_prefix='/api')
 app.register_blueprint(user_print, url_prefix='/users')
 app.register_blueprint(project_print, url_prefix='/project')
 app.register_blueprint(task_view, url_prefix='/task')
@@ -133,14 +130,14 @@ def page_not_found(e):
 from project.api.db_helper.login_check import login_helper, password_class, get_user
 from project.api.db_helper.login_check import user_check
 from project.api.db_helper.login_check import register
-from project.api.db_helper.project_operatios import get_project_all,project_crud,get_project,delete_project,share_project,all_project_users
-from project.api.db_helper.task_operations import create_task,get_task,delete_task,markings
+from project.api.db_helper.project_operatios import get_project_all, project_crud, get_project, delete_project, \
+    share_project, all_project_users
+from project.api.db_helper.task_operations import create_task, get_task, delete_task, markings
 
 api_obj.add_resource(login_helper, '/api/login/<string:email_>/<string:password>')
 api_obj.add_resource(user_check, '/api/user_check/<string:email_>')
 api_obj.add_resource(get_user, '/api/get_user')
 api_obj.add_resource(register, '/api/register/<string:username>/<string:email>/<string:password>')
-#api_obj.add_resource(project_crud, '/api/project/<string:project_name>/<string:project_description>/<string:project_starting_date>/<string:project_releasing>/<string:customer_name>/<string:customer_contact>/<string:customer_mail>/<string:customer_company_name>/<string:customer_site>')
 api_obj.add_resource(get_project_all, '/api/project/all/<int:id>')
 api_obj.add_resource(project_crud, '/api/project')
 api_obj.add_resource(get_project, '/api/project/view')
@@ -152,6 +149,3 @@ api_obj.add_resource(get_task, '/api/task/all')
 api_obj.add_resource(delete_task, '/api/task/delete')
 api_obj.add_resource(markings, '/api/task/marking')
 api_obj.add_resource(password_class, '/api/password')
-
-
-

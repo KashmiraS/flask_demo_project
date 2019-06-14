@@ -1,26 +1,17 @@
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-import socket
-#send back mail to
 
 def send_mail(subject,user_name,mail_id,body):
     mail_body_object = MIMEMultipart('alternatief')
     mail_body_object['Subject'] = subject
     mail_body_object['From'] = 'PROJECT SYSTEM <bagwan.akib.64@gmail.com>'#from_adres
     mail_body_object['To'] =f'{user_name} <{mail_id}>'
-    #text = body#"Hi!\nHow are you?\nHere is the link you wanted:\nhttp://www.python.org"
-
-    # Record the MIME types of both parts - text/plain and text/html.
     part1 = MIMEText(body, 'html')
-    #part2 = MIMEText(html, 'html')
-
     mail_body_object.attach(part1)
-    #mail_body_object.attach(part2)
-    #boodskap = MIMEText("<h1>Hierdie is die boodskap gedeelte vanie epos</h1>", 'plain')
     boodskap = MIMEText("<h1>Project Management system.</h1>", 'html')
     mail_body_object.attach(boodskap)
-
+    print('MAIL ATTACHED')
     try:
         mail = smtplib.SMTP('smtp.gmail.com',587)
         mail.ehlo()

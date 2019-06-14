@@ -1,6 +1,4 @@
-from project.task.forms import create_task_form
-import requests
-from project import host_address
+from project.task.forms import CreateTaskForm
 from flask import Blueprint, render_template, request, session, redirect, url_for
 import json
 from flask_login import login_required
@@ -15,18 +13,18 @@ api = task_api()
 @login_required
 def index(project_id):
     req = {'pid': project_id, 'uid': session['uid']}
-    resp = api.get_all(req)  # json.loads(requests.post(f'{host_address}/task/all', json.dumps(req)).text)
+    resp = api.get_all(req)
     print('>>{}'.format(str(resp)))
     count = dict()
     count['complete'] = 0
     count['remaining'] = 0
     count['all'] = 0
-    if (resp['status']):
+    if resp['status']:
         data = resp['tasks']
         for x in data:
-            if (x['state'] == 1):
+            if x['state'] == 1:
                 count['complete'] += 1
-            elif (x['state'] == 0):
+            elif x['state'] == 0:
                 count['remaining'] += 1
             count['all'] += 1
 
@@ -39,7 +37,7 @@ def view(list_id, project_id):
     req = {'pid': project_id, 'uid': session['uid']}
     tasks = list()
     print('\nREQUEST VIEW TASK-->{}'.format(str(req)))
-    resp = api.get_all(req)  # json.loads(requests.post(f'{host_address}/task/all', json.dumps(req)).text)
+    resp = api.get_all(req)
     print('\nRESPONSE VIEW TASK-->{}'.format(str(resp)))
     if resp['status']:
         tasks = resp['tasks']
@@ -49,7 +47,7 @@ def view(list_id, project_id):
 @task_view.route('/create/<int:project_id>', methods=['GET', 'POST'])
 @login_required
 def create_task(project_id):
-    form = create_task_form()
+    form = CreateTaskForm()
     if request.method == 'POST':
         req = dict()
         req['title'] = form.title.data
@@ -60,7 +58,7 @@ def create_task(project_id):
         req['pid'] = project_id
         print('\nREQUEST CREATE TASK-->{}'.format(str(req)))
         resp = api.create(
-            json.dumps(req))  # json.loads(requests.post(f'{host_address}/task/create',json.dumps(req)).text)
+            json.dumps(req))
         print('\nRESPONSE CREATE TASK-->{}'.format(str(resp)))
         if resp['status']:
             return redirect(url_for('task.index', project_id=project_id))
@@ -76,7 +74,6 @@ def delete_task(project_id, list_id, tid):
     req['pid'] = project_id
     req['tid'] = tid
     api.delete(req)
-    # requests.post(f'{host_address}/task/delete', json.dumps(req))
     return redirect(url_for('task.view', list_id=list_id, project_id=project_id))
 
 
@@ -88,7 +85,6 @@ def mark_complete(project_id, list_id, tid):
     req['pid'] = project_id
     req['tid'] = tid
     api.complet_mark(req)
-    # requests.post(f'{host_address}/task/marking', json.dumps(req))
     return redirect(url_for('task.view', list_id=list_id, project_id=project_id))
 
 
@@ -100,5 +96,4 @@ def mark_un_complete(project_id, list_id, tid):
     req['pid'] = project_id
     req['tid'] = tid
     api.uncomplete_mark(req)
-    # requests.patch(f'{host_address}/task/marking', json.dumps(req))
     return redirect(url_for('task.view', list_id=list_id, project_id=project_id))

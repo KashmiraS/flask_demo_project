@@ -1,9 +1,7 @@
 from project import db
 from project.users.models import Users
 from project.project_module.models import project
-from project.utils.conversions import to_date, todate_time, with_utf
-import datetime
-
+from project.utils.conversions import to_date
 
 
 class task_of_project(db.Model):
@@ -14,9 +12,10 @@ class task_of_project(db.Model):
     end_date = db.Column(db.Date)
     state = db.Column(db.Integer)
     uid = db.Column('uid', db.Integer, db.ForeignKey(Users.uid))
-    pid = db.Column('pid', db.Integer, db.ForeignKey(project.pid,ondelete='CASCADE'))
-
+    pid = db.Column('pid', db.Integer, db.ForeignKey(project.pid, ondelete='CASCADE'))
+    # Creating relationship with project
     projects = db.relationship("project", backref="task_of_project")
+
     def __init__(self, task_):
         self.title = task_['title']
         self.details = task_['details']
@@ -27,4 +26,3 @@ class task_of_project(db.Model):
         self.uid = task_['uid']
         self.pid = task_['pid']
         self.state = 0
-

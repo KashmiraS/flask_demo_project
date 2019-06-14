@@ -1,8 +1,8 @@
 import datetime
 
 
-def todate_time(date_):
-    if date_ == None:
+def to_date_time(date_):
+    if date_ is None:
         return
     elif len(str(date_)) < 20:
         print('>{}'.format(date_))
@@ -14,9 +14,10 @@ def todate_time(date_):
         return datetime.datetime.strptime(date_, '%a, %d %b %Y %X %Z')
 
 
-def to_date(str):
-    # print('>{}'.format(datetime.date(str)))
-    y, m, d = str.split('-')
+def to_date(date_string):
+    y, m, d = date_string.split('-')
     return datetime.datetime(int(y), int(m), int(d))
+
+
 def with_utf(date_):
     return datetime.datetime.strptime(datetime.datetime.strftime(date_, '%a, %d %b %Y %X'), '%a, %d %b %Y %X')

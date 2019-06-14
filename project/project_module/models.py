@@ -1,9 +1,7 @@
 from project import db
-from sqlalchemy.orm import backref
 from datetime import datetime
 from project.users.models import Users
-from project.utils.conversions import to_date, todate_time
-from project.utils.statics_data import date_in_result
+from project.utils.conversions import to_date_time
 
 share_project = db.Table('share_project', db.metadata,
                          db.Column('uid', db.Integer, db.ForeignKey(Users.uid)),
@@ -25,13 +23,13 @@ class project(db.Model):
     customer_company_name = db.Column(db.Text)
     customer_site = db.Column(db.Text)
     uid = db.Column(db.Integer, db.ForeignKey(Users.uid))
-    share = db.relationship('Users',secondary=share_project)
+    share = db.relationship('Users', secondary=share_project)
 
     def __init__(self, project_):
         self.project_name = project_['project_name']
         self.project_description = project_['project_description']
-        self.project_starting_date = todate_time(project_['project_starting_date']).date()
-        self.project_releasing = todate_time(project_['project_releasing']).date()
+        self.project_starting_date = to_date_time(project_['project_starting_date']).date()
+        self.project_releasing = to_date_time(project_['project_releasing']).date()
         self.customer_name = project_['customer_name']
         self.customer_contact = project_['customer_contact']
         self.customer_mail = project_['customer_mail']
@@ -59,9 +57,9 @@ class project(db.Model):
         self.project_name = project_['project_name']
         self.project_description = project_['project_description']
         if 'project_starting_date' in project_:
-            self.project_starting_date = todate_time(project_['project_starting_date']).date()
+            self.project_starting_date = to_date_time(project_['project_starting_date']).date()
         if 'project_releasing' in project_:
-            self.project_releasing = todate_time(project_['project_releasing']).date()
+            self.project_releasing = to_date_time(project_['project_releasing']).date()
         self.customer_name = project_['customer_name']
         self.customer_contact = project_['customer_contact']
         self.customer_mail = project_['customer_mail']
